@@ -8,29 +8,30 @@ running = True
 updating = False
 
 viewing = "sweden_counties"
+geometry = "hexagon"
 
 if viewing == "sweden_counties":
-    #map = getMinimalCostMap(sweden, sweden_border, 25, True, "hexagon")
-    map = TileMap(dict=sweden, border=sweden_border_medium, dictYNorth=True, geometry="hexagon")
+    map = getMinimalCostMap(sweden, sweden_border, 50, True, "hexagon")
+    #map = TileMap(dict=sweden, border=sweden_border_medium, dictYNorth=True, geometry=geometry)
     #map.addOutlierRegion(15, name="Gotland")
 
 elif viewing == "sweden_municipalities":
-    map = getMinimalCostMap(sweden_municipalities, sweden_border, 25, True, "hexagon")
+    map = getMinimalCostMap(sweden_municipalities, sweden_border, 25, True, geometry)
     #map = TileMap(dict=sweden_municipalities, border=sweden_border_medium, dictYNorth=True, geometry="hexagon")
 
 elif viewing == "usa_states":
-    map = TileMap(dict=USA, border=USA_border_simple, dictYNorth=True, geometry="square")
+    map = TileMap(dict=USA, border=USA_border_simple, dictYNorth=True, geometry=geometry)
 
 elif viewing == "south_america":
-    map = TileMap(dict=south_america, border=south_america_border, dictYNorth=True, geometry="hexagon")
+    map = TileMap(dict=south_america, border=south_america_border, dictYNorth=True, geometry=geometry)
 
 elif viewing == "africa":
-    map = TileMap(dict=africa, border=africa_border, dictYNorth=True, geometry="hexagon")
+    map = TileMap(dict=africa, border=africa_border, dictYNorth=True, geometry=geometry)
 
 elif viewing == "europe":
-    map = TileMap(dict=europe, border=europe_border, dictYNorth=True, geometry="hexagon")
+    map = TileMap(dict=europe, border=europe_border, dictYNorth=True, geometry=geometry)
 
-tilemap = False
+tilemap = True
 
 while running:
 
@@ -65,7 +66,7 @@ while running:
         map.drawGrid()
         map.drawTilepoints()
     else:
-        map.drawTileMap(text=False)
+        map.drawTileMap(text=True)
 
     pg.display.flip()
     clock.tick(60)

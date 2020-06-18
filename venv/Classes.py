@@ -144,7 +144,6 @@ class Map:
         allX = [region.centroid[0] for region in self.regions] + [border_point[0] for border_point in self.border]
         allY = [region.centroid[1] for region in self.regions] + [border_point[1] for border_point in self.border]
         maxX, maxY, minX, minY = max(allX), max(allY), min(allX), min(allY)
-        print(minX,  maxX)
 
         border_size = 75
         drawing_width = WIDTH - 2 * border_size
@@ -190,6 +189,7 @@ class Map:
     
     def addOutlierRegion(self, closest_to_id, name=""):
         self.out_lier_regions.append(Outlier(closest_to_id, name))
+        self.number_of_outliers += 1
 
     def addConnection(self, id_1, id_2):
         self.regions[id_1].addNeighbor(id_2)
@@ -519,7 +519,7 @@ class TileMap(Map):
 
         # Distance cost
         distance_cost = 0
-        for region_index in range(self.number_of_regions):
+        for region_index in range(self.number_of_regions - self.number_of_outliers):
             region_centroid = self.regions[region_index].centroid
             tile_center = self.tile_coordinates[self.region_index_to_tile_index[region_index]]
             distanceS = getDistanceS(region_centroid, tile_center)
@@ -528,7 +528,7 @@ class TileMap(Map):
         # Adjacency cost
         adjacency_cost = 0
         adjacency_costs = []
-        for region_index in range(self.number_of_regions):
+        for region_index in range(self.number_of_regions - self.number_of_outliers):
             tile_center = self.tile_coordinates[self.region_index_to_tile_index[region_index]]
             score = []
             for neighbor_index in self.regions[region_index].neighbors:
@@ -544,20 +544,20 @@ class TileMap(Map):
         # Relative orientation cost
         def getAngleDifference(new_point_1, new_point_2, old_point_1, old_point_2):
             if new_point_1[0] != new_point_2[0]:
-                angle_1 = arctan((new_point_2[1] - new_point_1[1]) / (new_point_2[0] - new_point_1[0]))
+                angle_1 = atan((new_point_2[1] - new_point_1[1]) / (new_point_2[0] - new_point_1[0]))
             else:
-                angle_1 = arctan((float("inf") * (new_point_2[1] - new_point_1[1])))
+                angle_1 = atan((float("inf") * (new_point_2[1] - new_point_1[1])))
 
             if old_point_1[0] != old_point_2[0]:
-                angle_2 = arctan((old_point_2[1] - old_point_1[1]) / (old_point_2[0] - old_point_1[0]))
+                angle_2 = atan((old_point_2[1] - old_point_1[1]) / (old_point_2[0] - old_point_1[0]))
             else:
-                angle_2 = arctan((float("inf") * (old_point_2[1] - old_point_1[1])))
+                angle_2 = atan((float("inf") * (old_point_2[1] - old_point_1[1])))
 
             return abs(angle_2 - angle_1)
 
         orientation_cost = 0
         orientation_costs = []
-        for region_index in range(self.number_of_regions):
+        for region_index in range(self.number_of_regions - self.number_of_outliers):
             orientation_errors = []
             region_old_point = self.regions[region_index].original_centroid
             region_new_point = self.tile_coordinates[self.region_index_to_tile_index[region_index]]
@@ -599,6 +599,5 @@ def getMinimalCostMap(dict, border, number_of_maps, dictYNorth=True, geometry="s
     for map_index in range(number_of_maps):
         costs[ maps[map_index].getCost(distance_weight=1, adjacency_weight=1, angle_weight=1, roughness_weight=1) ] = map_index
     minimal_cost = min(list(costs.keys()))
-    print("Penis")
     return maps[costs[minimal_cost]]
 
