@@ -1,25 +1,28 @@
-from Countries import USA, sweden, sweden_border, sweden_border_complex, sweden_border_medium, circle_border, sweden_municipalities
+from Countries import USA, USA_border, USA_border_simple, sweden, sweden_border, sweden_border_complex, sweden_border_medium, circle_border, sweden_municipalities
 from Classes import *
 
 clock = pg.time.Clock()
 running = True
 updating = False
 
-viewing = "sweden_counties"
+viewing = "sweden_municipalities"
 
 if viewing == "sweden_counties":
     map = TileMap(dict=sweden, border=sweden_border_medium, dictYNorth=True, geometry="hexagon")
     map.addOutlierRegion(15, name="Gotland")
-elif viewing == "swedden_municipalities":
-    map = TileMap(dict=sweden_municipalities, border=sweden_border_medium, dictYNorth=True, geometry="square")
+elif viewing == "sweden_municipalities":
+    map = TileMap(dict=sweden_municipalities, border=sweden_border_medium, dictYNorth=True, geometry="hexagon")
 
     map.addOutlierRegion(159, name="Öland")
     map.addOutlierRegion(289, name="Gotland")
+elif viewing == "usa_states":
+    map = TileMap(dict=USA, border=USA_border_simple, dictYNorth=True, geometry="square")
 
 
 tilemap = False
 
 while running:
+
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
@@ -36,7 +39,7 @@ while running:
         if event.type == pg.KEYDOWN and event.key == pg.K_0:
             map.matchTilepoints()
         if event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
-            map.convertToTileMap(cheate=False)
+            map.convertToTileMap(cheate=True)
             tilemap = True
 
     pg.draw.rect(screen, (255, 255, 255), (0,0,WIDTH, HEIGHT))

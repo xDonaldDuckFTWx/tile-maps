@@ -101,8 +101,8 @@ class Map:
 
             for point_index in range(len(self.border)):
                 x, y = self.border[point_index]
-                self.border[point_index] =  ((x + shiftX) * transform_value + border_size,
-                                            (y + shiftY) * transform_value + border_size)
+                self.border[point_index] =  ((x + shiftX) * transform_value + border_size + midX,
+                                            (y + shiftY) * transform_value + border_size + midY)
 
     def transformGPStoFlat(self):
         # It is assumed all region coordinates are GPS coordinates
@@ -206,7 +206,7 @@ class TileMap(Map):
             raise Exception("Tile map initiated without border")
         self.getArea()
         self.region_area = 1
-        if self.geometry == "hexagon": self.region_area = 0.65
+        #if self.geometry == "hexagon": self.region_area = 0.65
         self.stepSize = (self.area / (self.number_of_regions * self.region_area)) ** 0.5
 
     #Vector addition
@@ -352,6 +352,7 @@ class TileMap(Map):
     #Get the coordinates of tiles within country border
     def getTileCoordinates(self):
         if self.geometry == "square":
+
             self.tile_coordinates = []
             self.tile_coordinate_filled = {}
             x = (self.grid_shift_x + self.stepSize/2) % self.stepSize
@@ -391,7 +392,7 @@ class TileMap(Map):
                         self.tile_coordinate_filled[(x, y)] = False
 
                     x += self.stepSize
-                y += self.stepSize * 0.866
+                y += self.stepSize# * 0.866
             self.grid_shift_x = og_grid_shift_x
 
     # Find a line-up with the current country border that fits the right amount of tile points
@@ -403,7 +404,7 @@ class TileMap(Map):
             if len(self.tile_coordinates) == self.number_of_regions:
                 succes = True
                 break
-        if not succes: print("Not succesful...")
+        if not succes: print("Not succesful... Tiles: {}, Regions: {}".format(len(self.tile_coordinates), self.number_of_regions))
 
     # Draws all tile points within country border. Red if amount not matching region amount, else green.
     def drawTilepoints(self):
@@ -422,8 +423,12 @@ class TileMap(Map):
             start = self.tile_coordinates[self.region_index_to_tile_index[outlier.closest_to_id]]
             def getNeighbors(x, y):
                 s = self.stepSize
-                returning = [(x + self.stepSize, y), (x - self.stepSize, y), (x, y + self.stepSize), (x, y - self.stepSize), (x + s, y + s), (x + s, y - s), (x - s, y + s), (x - s, y - s)]
-                returning = [i for i in returning if (i[0] > 0 and i[0] < WIDTH and i[1] > 0 and i[1] < HEIGHT)]
+                if self.geometry == "square":
+                    returning = [(x + self.stepSize, y), (x - self.stepSize, y), (x, y + self.stepSize), (x, y - self.stepSize), (x + s, y + s), (x + s, y - s), (x - s, y + s), (x - s, y - s)]
+                    returning = [i for i in returning if (i[0] > 0 and i[0] < WIDTH and i[1] > 0 and i[1] < HEIGHT)]
+                else:
+                    returning = [(x + self.stepSize, y), (x - self.stepSize, y)]
+                    returning = [i for i in returning if (i[0] > 0 and i[0] < WIDTH and i[1] > 0 and i[1] < HEIGHT)]
                 return returning
             visited = getNeighbors(start[0], start[1]) + [start]
             queue = getNeighbors(start[0], start[1])
@@ -454,6 +459,7 @@ class TileMap(Map):
         if len(self.tile_coordinates) != self.number_of_regions:
             print("Points and regions do not match!")
             return None
+        if self.geometry == "hexagon": self.tile_coordinates = [(x, y * 0.866) for x, y in self.tile_coordinates]
         if cheate:
             self.region_index_to_tile_index = {i : i for i in range(self.number_of_regions)}
         else:
