@@ -1,0 +1,5 @@
+Using pip:
+
+pip install pygame
+pip install shapely
+pip install numpy
