@@ -5,12 +5,12 @@ clock = pg.time.Clock()
 running = True
 updating = False
 
-regions = False
+viewing = "sweden_counties"
 
-if regions:
-    map = TileMap(dict=sweden, border=sweden_border_medium, dictYNorth=True, geometry="square")
+if viewing == "sweden_counties":
+    map = TileMap(dict=sweden, border=sweden_border_medium, dictYNorth=True, geometry="hexagon")
     map.addOutlierRegion(15, name="Gotland")
-else:
+elif viewing == "swedden_municipalities":
     map = TileMap(dict=sweden_municipalities, border=sweden_border_medium, dictYNorth=True, geometry="square")
 
     map.addOutlierRegion(159, name="Öland")
@@ -36,7 +36,7 @@ while running:
         if event.type == pg.KEYDOWN and event.key == pg.K_0:
             map.matchTilepoints()
         if event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
-            map.convertToTileMap(cheate=True)
+            map.convertToTileMap(cheate=False)
             tilemap = True
 
     pg.draw.rect(screen, (255, 255, 255), (0,0,WIDTH, HEIGHT))

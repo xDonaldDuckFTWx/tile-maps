@@ -394,8 +394,7 @@ class TileMap(Map):
                 y += self.stepSize * 0.866
             self.grid_shift_x = og_grid_shift_x
 
-    # Match every tile to a region using Hungarian method. cost_matrix takes into account distance from tile_coordinate to transformed region centroid.
-    # cheat = True skips over Hungarian method, matches every index to itself. Useful for quick visualization.
+    # Find a line-up with the current country border that fits the right amount of tile points
     def matchTilepoints(self):
         succes = False
         for grid_shift_x, grid_shift_y in [(x, y) for x in range(0, int(self.stepSize), 4) for y in range(0, int(self.stepSize), 4)]:
@@ -404,7 +403,7 @@ class TileMap(Map):
             if len(self.tile_coordinates) == self.number_of_regions:
                 succes = True
                 break
-        if not succes: print("Not succes...")
+        if not succes: print("Not succesful...")
 
     # Draws all tile points within country border. Red if amount not matching region amount, else green.
     def drawTilepoints(self):
