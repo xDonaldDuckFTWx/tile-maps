@@ -20,3 +20,12 @@ if there are any landmasses not connected to main:
 map.updateMap()
 map.getTileCoordinates()
 map.convertToTileMap()
+
+
+
+OBS:
+When working with maps with lots of regions, you can do
+
+map.convertToTileMap(cheate=True)
+
+in order to quickly preview the geometrical shape of the map. What this does is remove the assignment step of the algorithm, which means that the tiles won't have the right region assigned to them. When dealing with outliers, this will make them behave strangely.

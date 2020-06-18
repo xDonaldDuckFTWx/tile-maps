@@ -5,5 +5,5 @@ from math import exp, pi, log, tan, fmod
 
 pg.init()
 
-WIDTH, HEIGHT = 600, 600
+WIDTH, HEIGHT = 700, 700
 screen = pg.display.set_mode((WIDTH, HEIGHT))

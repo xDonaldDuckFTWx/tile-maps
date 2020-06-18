@@ -1,23 +1,34 @@
-from Countries import USA, USA_border, USA_border_simple, sweden, sweden_border, sweden_border_complex, sweden_border_medium, circle_border, sweden_municipalities
+from Countries import printIDs, USA, USA_border, USA_border_simple, sweden, \
+    sweden_border, sweden_border_medium, circle_border, sweden_municipalities, \
+    south_america, south_america_border, africa, africa_border, europe, europe_border
 from Classes import *
 
 clock = pg.time.Clock()
 running = True
 updating = False
 
-viewing = "sweden_municipalities"
+viewing = "sweden_counties"
 
 if viewing == "sweden_counties":
+    #map = getMinimalCostMap(sweden, sweden_border, 25, True, "hexagon")
     map = TileMap(dict=sweden, border=sweden_border_medium, dictYNorth=True, geometry="hexagon")
-    map.addOutlierRegion(15, name="Gotland")
-elif viewing == "sweden_municipalities":
-    map = TileMap(dict=sweden_municipalities, border=sweden_border_medium, dictYNorth=True, geometry="hexagon")
+    #map.addOutlierRegion(15, name="Gotland")
 
-    map.addOutlierRegion(159, name="Öland")
-    map.addOutlierRegion(289, name="Gotland")
+elif viewing == "sweden_municipalities":
+    map = getMinimalCostMap(sweden_municipalities, sweden_border, 25, True, "hexagon")
+    #map = TileMap(dict=sweden_municipalities, border=sweden_border_medium, dictYNorth=True, geometry="hexagon")
+
 elif viewing == "usa_states":
     map = TileMap(dict=USA, border=USA_border_simple, dictYNorth=True, geometry="square")
 
+elif viewing == "south_america":
+    map = TileMap(dict=south_america, border=south_america_border, dictYNorth=True, geometry="hexagon")
+
+elif viewing == "africa":
+    map = TileMap(dict=africa, border=africa_border, dictYNorth=True, geometry="hexagon")
+
+elif viewing == "europe":
+    map = TileMap(dict=europe, border=europe_border, dictYNorth=True, geometry="hexagon")
 
 tilemap = False
 
@@ -39,7 +50,7 @@ while running:
         if event.type == pg.KEYDOWN and event.key == pg.K_0:
             map.matchTilepoints()
         if event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
-            map.convertToTileMap(cheate=True)
+            map.convertToTileMap(cheate=False)
             tilemap = True
 
     pg.draw.rect(screen, (255, 255, 255), (0,0,WIDTH, HEIGHT))

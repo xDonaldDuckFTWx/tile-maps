@@ -57,33 +57,38 @@ class Outlier:
 class Map:
     def __init__(self, dict=None, border=[], dictYNorth=True, dictCoordinatesGPS=True):
         self.number_of_regions = 0
+        self.number_of_outliers = 0
         self.regions = []
         self.out_lier_regions = []
         self.region_index_to_tile_index = None
         if dictYNorth:
             self.border = border
         else:
-            self.border = list([(x, 0-y) for x, y in border])
+            self.border = list([[x, 0-y] for x, y in border])
 
         if dict is not None:
-            for key in dict.keys():
-                x, y = dict[key]["coordinates"]
+            for key in dict["regions"].keys():
+                x, y = dict["regions"][key]["coordinates"]
                 if not dictYNorth: y = 0-y
                 self.addRegion((x, y))
                 self.regions[-1].name = key[:10]
-            for key in dict.keys():
-                for neighbor in dict[key]["neighbors"]:
-                    self.addConnection(list(dict.keys()).index(key), list(dict.keys()).index(neighbor))
+            for key in dict["regions"].keys():
+                for neighbor in dict["regions"][key]["neighbors"]:
+                    self.addConnection(list(dict["regions"].keys()).index(key), list(dict["regions"].keys()).index(neighbor))
+            for key in dict["outliers"].keys():
+                self.addOutlierRegion(list(dict["regions"].keys()).index(dict["outliers"][key]["closest_to"]), key)
 
             if dictCoordinatesGPS:
                 self.transformGPStoFlat()
 
-            # Standardize coordinates so that all are in ([0, WIDTH], [0, HEIGHT])
+            self.standardize()
+
+            """" Standardize coordinates so that all are in ([0, WIDTH], [0, HEIGHT])
             allX = [region.centroid[0] for region in self.regions] + [border_point[0] for border_point in self.border]
             allY = [region.centroid[1] for region in self.regions] + [border_point[1] for border_point in self.border]
             maxX, maxY, minX, minY = max(allX), max(allY), min(allX), min(allY)
 
-            border_size = 25
+            border_size = 75
             drawing_width = WIDTH - 2 * border_size
             drawing_height = HEIGHT - 2 * border_size
 
@@ -91,8 +96,8 @@ class Map:
 
             shiftX = 0 - minX
             shiftY = 0 - minY
-            midX = (maxX - minX) // 2
-            midY = (maxY - minY) // 2
+            midX = (WIDTH - (maxX + shiftX) * transform_value) / 2
+            midY = (HEIGHT - (maxY + shiftY) * transform_value) / 2
 
             for region in self.regions:
                 x, y = region.centroid
@@ -102,7 +107,7 @@ class Map:
             for point_index in range(len(self.border)):
                 x, y = self.border[point_index]
                 self.border[point_index] =  ((x + shiftX) * transform_value + border_size + midX,
-                                            (y + shiftY) * transform_value + border_size + midY)
+                                            (y + shiftY) * transform_value + border_size + midY)"""
 
     def transformGPStoFlat(self):
         # It is assumed all region coordinates are GPS coordinates
@@ -131,7 +136,7 @@ class Map:
             latRad = latitude * pi / 180
             mercN = log(tan((pi / 4) + (latRad / 2)))
             y = (mapHeight / 2) - (mapWidth * mercN / (2 * pi))
-            new_coordinates.append((x, y))
+            new_coordinates.append([x, y])
 
         self.border = new_coordinates
 
@@ -139,8 +144,9 @@ class Map:
         allX = [region.centroid[0] for region in self.regions] + [border_point[0] for border_point in self.border]
         allY = [region.centroid[1] for region in self.regions] + [border_point[1] for border_point in self.border]
         maxX, maxY, minX, minY = max(allX), max(allY), min(allX), min(allY)
+        print(minX,  maxX)
 
-        border_size = 25
+        border_size = 75
         drawing_width = WIDTH - 2 * border_size
         drawing_height = HEIGHT - 2 * border_size
 
@@ -148,21 +154,18 @@ class Map:
 
         shiftX = 0 - minX
         shiftY = 0 - minY
-        midX = (WIDTH + minX - maxX) / 2
-        midY = (HEIGHT - maxY + minY) / 2
-
-   #     midX = (maxX - minX) // 2
-    #    midY = (maxY - minY) // 2
+        midX = (WIDTH - (maxX + shiftX) * transform_value) / 2
+        midY = (HEIGHT - (maxY + shiftY) * transform_value) / 2
 
         for region in self.regions:
             x, y = region.centroid
             region.centroid =   ((x + shiftX) * transform_value + midX,
-                                (y + shiftY) * transform_value + border_size)
+                                (y + shiftY) * transform_value + midY)
 
         for point_index in range(len(self.border)):
             x, y = self.border[point_index].copy()
             self.border[point_index] =  ((x + shiftX) * transform_value + midX,
-                                        (y + shiftY) * transform_value + border_size)
+                                        (y + shiftY) * transform_value + midY)
     
     def draw(self, region_radius=10):
         self.drawing_coordinates_neighbors = []
@@ -404,6 +407,7 @@ class TileMap(Map):
             if len(self.tile_coordinates) == self.number_of_regions:
                 succes = True
                 break
+        return succes
         if not succes: print("Not succesful... Tiles: {}, Regions: {}".format(len(self.tile_coordinates), self.number_of_regions))
 
     # Draws all tile points within country border. Red if amount not matching region amount, else green.
@@ -491,6 +495,7 @@ class TileMap(Map):
                 pg.draw.rect(screen, (255, 255, 255), (X, Y, self.stepSize + 1, self.stepSize + 1), int(self.stepSize / 8))
             elif self.geometry == "hexagon":
                 x, y = self.tile_coordinates[tile_index]
+                X, Y = int(x), int(y)
                 s = self.stepSize/2
                 corner_points = [(x, y + s), (x + 0.866 * s, y + s/2), (x + 0.866 * s, y - s/2), (x, y - s), (x - 0.866 * s, y - s/2), (x - 0.866 * s, y + s/2)]
                 #corner_points = [(x - s, y), (x - s/2, y + 0.866 * s), (x + s/2, y + 0.866 * s), (x + s, y), (x + s/2, y - 0.866 * s), (x - s/2, y - 0.866 * s)]
@@ -502,10 +507,98 @@ class TileMap(Map):
 
                 region_name_text = myfont.render(self.regions[region_index].name, 1, (0, 0, 0))
                 width, height = region_name_text.get_rect().width, region_name_text.get_rect().height
-                text_position = (X + self.stepSize//2 - width//2, Y + self.stepSize//2 - height//2)
+                if self.geometry == "square": text_position = (X + self.stepSize//2 - width//2, Y + self.stepSize//2 - height//2)
+                elif self.geometry == "hexagon": text_position = (int( x - width / 2 ), int( y - height / 2 ))
 
                 screen.blit(region_name_text, text_position)
 
+
+    def getCost(self, distance_weight=1, adjacency_weight=1, angle_weight=1, roughness_weight=1):
+        def getDistanceS(point_1, point_2):
+            return (((point_1[0] - point_2[0]) ** 2 + (point_1[1] - point_2[1]) ** 2) ** 0.5) / self.stepSize
+
+        # Distance cost
+        distance_cost = 0
+        for region_index in range(self.number_of_regions):
+            region_centroid = self.regions[region_index].centroid
+            tile_center = self.tile_coordinates[self.region_index_to_tile_index[region_index]]
+            distanceS = getDistanceS(region_centroid, tile_center)
+            distance_cost += distanceS
+
+        # Adjacency cost
+        adjacency_cost = 0
+        adjacency_costs = []
+        for region_index in range(self.number_of_regions):
+            tile_center = self.tile_coordinates[self.region_index_to_tile_index[region_index]]
+            score = []
+            for neighbor_index in self.regions[region_index].neighbors:
+                neighbor_position = self.tile_coordinates[self.region_index_to_tile_index[neighbor_index]]
+                if getDistanceS(tile_center, neighbor_position) <= 1.1:
+                    score.append(1)
+                else:
+                    score.append(0)
+            score = sum(score) / len(score)
+            adjacency_costs.append(score)
+        adjacency_cost = sum(adjacency_costs) / len(adjacency_costs)
+
+        # Relative orientation cost
+        def getAngleDifference(new_point_1, new_point_2, old_point_1, old_point_2):
+            if new_point_1[0] != new_point_2[0]:
+                angle_1 = arctan((new_point_2[1] - new_point_1[1]) / (new_point_2[0] - new_point_1[0]))
+            else:
+                angle_1 = arctan((float("inf") * (new_point_2[1] - new_point_1[1])))
+
+            if old_point_1[0] != old_point_2[0]:
+                angle_2 = arctan((old_point_2[1] - old_point_1[1]) / (old_point_2[0] - old_point_1[0]))
+            else:
+                angle_2 = arctan((float("inf") * (old_point_2[1] - old_point_1[1])))
+
+            return abs(angle_2 - angle_1)
+
+        orientation_cost = 0
+        orientation_costs = []
+        for region_index in range(self.number_of_regions):
+            orientation_errors = []
+            region_old_point = self.regions[region_index].original_centroid
+            region_new_point = self.tile_coordinates[self.region_index_to_tile_index[region_index]]
+            for neighbor_index in self.regions[region_index].neighbors:
+                neighbor_old_point = self.regions[neighbor_index].original_centroid
+                neighbor_new_point = self.tile_coordinates[self.region_index_to_tile_index[neighbor_index]]
+
+                angle_difference = getAngleDifference(region_new_point, neighbor_new_point, region_old_point, neighbor_old_point)
+                orientation_errors.append(angle_difference)
+            orientation_costs.append( sum(orientation_errors) / len(orientation_errors) )
+        orientation_cost = sum(orientation_costs) / len(orientation_costs)
+
+        #Roughness cost   ---- TO DO
+        """roughness_cost = 0
+        edges = 0
+        for tile in map.tiles:
+            edges += 4
+            for a in [1, -1]:
+                if (tile[0] + a, tile[1]) in map.tiles:
+                    edges -= 1
+                if (tile[0], tile[1] + a) in map.tiles:
+                    edges -= 1
+        P = 2 * (3.14159 * map.number_of_regions)**0.5"""
+        roughness_cost = 0#(edges - P) / P
+
+
+        total_cost = distance_cost * distance_weight + adjacency_cost * adjacency_weight + orientation_cost * angle_weight + roughness_cost * roughness_weight
+        return total_cost
+
     
-        
+def getMinimalCostMap(dict, border, number_of_maps, dictYNorth=True, geometry="square", distance_weight=1, adjacency_weight=1, angle_weight=1, roughness_weight=1):
+    maps = [TileMap(dict=dict, border=border, dictYNorth=dictYNorth, geometry=geometry) for i in range(number_of_maps)]
+    for map in maps:
+        map.updateMap(iterations=150, k=4, noise=True)
+        while not map.matchTilepoints():
+            map.updateMap(iterations=150, k=4, noise=True)
+        map.convertToTileMap()
+    costs = {}
+    for map_index in range(number_of_maps):
+        costs[ maps[map_index].getCost(distance_weight=1, adjacency_weight=1, angle_weight=1, roughness_weight=1) ] = map_index
+    minimal_cost = min(list(costs.keys()))
+    print("Penis")
+    return maps[costs[minimal_cost]]
 
