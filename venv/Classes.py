@@ -50,9 +50,10 @@ class Region:
             self.neighbors_higher_id.append(neighbor_id)
 
 class Outlier:
-    def __init__(self, closest_to_id, name):
+    def __init__(self, closest_to_id, name, coordinate):
         self.closest_to_id = closest_to_id
         self.name = name
+        self.centroid = coordinate
 
 class Map:
     def __init__(self, dict=None, border=[], dictYNorth=True, dictCoordinatesGPS=True):
@@ -76,7 +77,7 @@ class Map:
                 for neighbor in dict["regions"][key]["neighbors"]:
                     self.addConnection(list(dict["regions"].keys()).index(key), list(dict["regions"].keys()).index(neighbor))
             for key in dict["outliers"].keys():
-                self.addOutlierRegion(list(dict["regions"].keys()).index(dict["outliers"][key]["closest_to"]), key)
+                self.addOutlierRegion(list(dict["regions"].keys()).index(dict["outliers"][key]["closest_to"]), dict["outliers"][key]["coordinates"], name=key)
 
             if dictCoordinatesGPS:
                 self.transformGPStoFlat()
@@ -187,8 +188,8 @@ class Map:
         self.regions.append(Region(centroid, self.number_of_regions))
         self.number_of_regions += 1
     
-    def addOutlierRegion(self, closest_to_id, name=""):
-        self.out_lier_regions.append(Outlier(closest_to_id, name))
+    def addOutlierRegion(self, closest_to_id, coordinate, name=""):
+        self.out_lier_regions.append(Outlier(closest_to_id, name, coordinate))
         self.number_of_outliers += 1
 
     def addConnection(self, id_1, id_2):
@@ -211,6 +212,7 @@ class TileMap(Map):
         self.region_area = 1
         #if self.geometry == "hexagon": self.region_area = 0.65
         self.stepSize = (self.area / (self.number_of_regions * self.region_area)) ** 0.5
+        self.tile_map_dict = {}
 
     #Vector addition
     def addVectors(self, *vectors):
@@ -252,11 +254,6 @@ class TileMap(Map):
                 suji = [self.stepSize * uji[0], self.stepSize * uji[1]]
                 new = self.addVectors([new, suji, self.regions[neighbor].centroid])
             new = [new[0] / region.number_of_neighbors, new[1] / region.number_of_neighbors]
-
-#            new = self.addVectors([self.addVectors([self.regions[i].centroid for i in region.neighbors]),
- #                 [s * q for q in self.addVectors([self.getUji(region.centroid, self.regions[i].centroid) for i in region.neighbors])]])
-  #          new[0], new[1] = int((1 / region.number_of_neighbors) * new[0]), int((1 / region.number_of_neighbors) * new[1])
-   #         print(new)
 
             new_positions.append(new)
         for i in range(self.number_of_regions):
@@ -423,36 +420,59 @@ class TileMap(Map):
     # Gives every outlier a position in final map.
     def getOutLiers(self):
         for outlier in self.out_lier_regions:
+         #   outlier_pos = outlier.centroid
+          #  closest_region_pos = self.regions[outlier.closest_to_id].centroid
+           # original_angle = asin((outlier_pos[1] - closest_region_pos[1]) / (((outlier_pos[1] - closest_region_pos[1])**2 + (outlier_pos[0] - closest_region_pos[0])**2)**0.5))
+
+            #region_x, region_y = self.tile_coordinates[self.region_index_to_tile_index[outlier.closest_to_id]]
             # bfs utill found
-            start = self.tile_coordinates[self.region_index_to_tile_index[outlier.closest_to_id]]
-            def getNeighbors(x, y):
+            start = self.region_to_tile_coordinate[outlier.closest_to_id]
+            def getNeighbors(x, y, only_adjacent=True, angle=True):
                 s = self.stepSize
                 if self.geometry == "square":
-                    returning = [(x + self.stepSize, y), (x - self.stepSize, y), (x, y + self.stepSize), (x, y - self.stepSize), (x + s, y + s), (x + s, y - s), (x - s, y + s), (x - s, y - s)]
-                    returning = [i for i in returning if (i[0] > 0 and i[0] < WIDTH and i[1] > 0 and i[1] < HEIGHT)]
+                    #returning = [(x + self.stepSize, y), (x - self.stepSize, y), (x, y + self.stepSize), (x, y - self.stepSize), (x + s, y + s), (x + s, y - s), (x - s, y + s), (x - s, y - s)]
+                    returning = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+                    if not only_adjacent: returning += [(x + 1, y - 1), (x + 1, y + 1), (x - 1, y - 1), (x - 1, y + 1)]
+                    returning = [i for i in returning if (i[0] >= 0 and i[0] < self.tile_map_maxX and i[1] >= 0 and i[1] < self.tile_map_maxY)]
+                    if angle:
+                        #Return only those in the same direction...
+                        returning = [i for i in returning if (outlier.centroid[0] - i[0] <= outlier.centroid[0] - x and outlier.centroid[1] - i[1] <= outlier.centroid[1] - y)]
                 else:
-                    returning = [(x + self.stepSize, y), (x - self.stepSize, y)]
-                    returning = [i for i in returning if (i[0] > 0 and i[0] < WIDTH and i[1] > 0 and i[1] < HEIGHT)]
+                    returning = [(x + 2, y), (x - 2, y), (x + 1, y + 1), (x - 1, y + 1), (x + 1, y - 1), (x - 1, y - 1)]
+                    returning = [i for i in returning if (i[0] >= 0 and i[0] < self.tile_map_maxX and i[1] >= 0 and i[1] < self.tile_map_maxY)]
+                    if angle:
+                        # Return only those in the same direction...
+                        returning = [i for i in returning if (
+                                    outlier.centroid[0] - i[0] <= outlier.centroid[0] - x and outlier.centroid[1] - i[
+                                1] <= outlier.centroid[1] - y)]
+
                 return returning
-            visited = getNeighbors(start[0], start[1]) + [start]
-            queue = getNeighbors(start[0], start[1])
+            visited = getNeighbors(start[0], start[1], angle=False) + [start]
+            queue = getNeighbors(start[0], start[1], angle=False)
             found = False
             tested = 0
             while queue and not found:
                 current = queue.pop(0)
-                for x, y in getNeighbors(current[0], current[1]):
+                for x, y in getNeighbors(current[0], current[1], angle=True):
                     tested += 1
                     if not (x, y) in visited:
                         visited.append((x, y))
                         queue.append((x, y))
-                        if not (x, y) in self.tile_coordinates:
-                            if not any([neighbor in self.tile_coordinates for neighbor in getNeighbors(x, y)]):
+                        if self.tile_map_dict[(x, y)] == None:
+                            if not any([self.tile_map_dict[neighbor] != None for neighbor in getNeighbors(x, y, only_adjacent=False, angle=False)]):
                                 result = (x, y)
                                 found = True
                                 break
-            self.tile_coordinates.append((x, y))
-            self.regions.append(Region((x, y), self.number_of_regions, outlier.name))
+
+            x, y = result
+            if self.geometry == "square"    : tile_x, tile_y = (x + 0.5) * self.stepSize, (y + 0.5) * self.stepSize
+            elif self.geometry == "hexagon" : tile_x, tile_y = ((x + 0.5) * (self.stepSize*0.5)), y * (self.stepSize*0.86)
+
+            self.tile_coordinates.append((tile_x, tile_y))
+            self.regions.append(Region((tile_x, tile_y), self.number_of_regions, outlier.name))
             self.region_index_to_tile_index[self.number_of_regions] = self.number_of_regions
+            self.tile_map_dict[(x, y)] = outlier.name
+            self.region_to_tile_coordinate[self.number_of_regions] = (x, y)
             self.number_of_regions += 1
 
 
@@ -479,8 +499,53 @@ class TileMap(Map):
             self.tiles = hungarian.get_results()
             self.region_index_to_tile_index = {tile[0] : tile[1] for tile in self.tiles}
 
+        while not any([tile[0] < self.stepSize for tile in self.tile_coordinates]):
+            self.tile_coordinates = [[x - self.stepSize, y] for x, y in self.tile_coordinates]
+        if self.geometry == "square":
+            while not any([tile[1] < self.stepSize for tile in self.tile_coordinates]):
+                self.tile_coordinates = [[x, y - self.stepSize] for x, y in self.tile_coordinates]
+        elif self.geometry == "hexagon":
+            while not any([tile[1] < self.stepSize * 0.866 for tile in self.tile_coordinates]):
+                self.tile_coordinates = [[x, y - self.stepSize * 0.866] for x, y in self.tile_coordinates]
+
+        self.region_to_tile_coordinate = {}
+        if self.geometry == "square"    : self.tile_map_maxX = int(max([tile[0] for tile in self.tile_coordinates]) // self.stepSize + 2)
+        elif self.geometry == "hexagon" : self.tile_map_maxX = int((max([tile[0] for tile in self.tile_coordinates])*2) // self.stepSize + 2)
+        if self.geometry == "square"    : self.tile_map_maxY = int(max([tile[1] for tile in self.tile_coordinates]) // self.stepSize + 2)
+        elif self.geometry == "hexagon" : self.tile_map_maxY = int(max([tile[1] for tile in self.tile_coordinates]) // (self.stepSize*0.866) + 2)
+        self.tile_map_dict = {(x, y): None for x in
+                              range(self.tile_map_maxX)
+                              for y in
+                              range(self.tile_map_maxY)}
+
+        for region_index in range(self.number_of_regions):
+            coordinate = self.tile_coordinates[self.region_index_to_tile_index[region_index]]
+
+            if self.geometry == "square"    : coordinate = tuple(int(i / self.stepSize) for i in coordinate)
+            elif self.geometry == "hexagon" :
+                x, y = coordinate
+                coordinate = (int((x + 0.5) / (self.stepSize*0.5)), int(y / (self.stepSize*0.86)))
+
+            self.tile_map_dict[coordinate] = self.regions[region_index].name
+            self.region_to_tile_coordinate[region_index] = coordinate
+
+        
         if self.out_lier_regions:
             self.getOutLiers()
+
+        if self.geometry == "hexagon":
+            for region_index in range(self.number_of_regions):
+                x, y = self.region_to_tile_coordinate[region_index]
+                x = (x+0.5)*(self.stepSize/2)
+                y = (y + 0.5) * self.stepSize * 0.866
+                self.tile_coordinates[self.region_index_to_tile_index[region_index]] = [x, y]
+        self.colors = [(randint(100,255), 0, 0) for i in range(self.number_of_regions)]
+
+
+
+
+
+
 
     #Draws tile map.
     def drawTileMap(self, text=True):
@@ -500,7 +565,7 @@ class TileMap(Map):
                 corner_points = [(x, y + s), (x + 0.866 * s, y + s/2), (x + 0.866 * s, y - s/2), (x, y - s), (x - 0.866 * s, y - s/2), (x - 0.866 * s, y + s/2)]
                 #corner_points = [(x - s, y), (x - s/2, y + 0.866 * s), (x + s/2, y + 0.866 * s), (x + s, y), (x + s/2, y - 0.866 * s), (x - s/2, y - 0.866 * s)]
                 corner_points = [(int(x), int(y)) for x, y in corner_points]
-                pg.draw.polygon(screen, (215, 50, 50), corner_points)
+                pg.draw.polygon(screen, self.colors[region_index], corner_points)
 
             if text:
                 myfont = pg.font.SysFont("Times New Roman", 10)
@@ -583,9 +648,21 @@ class TileMap(Map):
         P = 2 * (3.14159 * map.number_of_regions)**0.5"""
         roughness_cost = 0#(edges - P) / P
 
+            
 
         total_cost = distance_cost * distance_weight + adjacency_cost * adjacency_weight + orientation_cost * angle_weight + roughness_cost * roughness_weight
         return total_cost
+    
+    def printDict(self):
+        print("{")
+        print('"geometry" : "{}",'.format(self.geometry))
+        print('"regions" : ')
+        print("   {")
+        for region_index in range(self.number_of_regions - 1):
+            print('      "{}" : {},'.format(self.regions[region_index].name, self.region_to_tile_coordinate[region_index]))
+        print('      "{}" : {}'.format(self.regions[self.number_of_regions - 1].name, self.region_to_tile_coordinate[self.number_of_regions - 1]))
+        print("   }")
+        print("}")
 
     
 def getMinimalCostMap(dict, border, number_of_maps, dictYNorth=True, geometry="square", distance_weight=1, adjacency_weight=1, angle_weight=1, roughness_weight=1):

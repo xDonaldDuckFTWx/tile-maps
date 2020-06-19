@@ -150,7 +150,7 @@ sweden = {
     },
     "outliers":
         {
-            "Gotland": {"closest_to" : "Kalmar"}
+            "Gotland": {"closest_to" : "Kalmar", "coordinates": (18.49, 57.38)}
         }
 }
 sweden_border = [(20.6, 69.0), (23.7, 67.9), (23.9, 65.7), (22.3, 65.8), (21.5, 64.4), (18.0, 62.7), (17.3, 61.0), (19.3, 59.6), (18.3, 59.0), (16.6, 57.7), (16.1, 56.1), (14.3, 55.4), (12.9, 55.4), (12.1, 55.3), #(12.8, 56.5),
@@ -563,7 +563,7 @@ africa = {
         },
     "outliers" :
         {
-            "Madagascar" : {"closest_to" : "Mozambique"}
+            "Madagascar" : {"coordinates" : (46.318322, -19.378809), "closest_to" : "Mozambique"}
         }
 }
 

@@ -3,21 +3,22 @@ from Countries import printIDs, USA, USA_border, USA_border_simple, sweden, \
     south_america, south_america_border, africa, africa_border, europe, europe_border
 from Classes import *
 
+
 clock = pg.time.Clock()
 running = True
 updating = False
 
 viewing = "sweden_counties"
-geometry = "hexagon"
+geometry = "square"
 
 if viewing == "sweden_counties":
-    map = getMinimalCostMap(sweden, sweden_border, 50, True, "hexagon")
-    #map = TileMap(dict=sweden, border=sweden_border_medium, dictYNorth=True, geometry=geometry)
+    #map = getMinimalCostMap(sweden, sweden_border, 50, True, geometry)
+    map = TileMap(dict=sweden, border=sweden_border_medium, dictYNorth=True, geometry=geometry)
     #map.addOutlierRegion(15, name="Gotland")
 
 elif viewing == "sweden_municipalities":
-    map = getMinimalCostMap(sweden_municipalities, sweden_border, 25, True, geometry)
-    #map = TileMap(dict=sweden_municipalities, border=sweden_border_medium, dictYNorth=True, geometry="hexagon")
+    #map = getMinimalCostMap(sweden_municipalities, sweden_border, 25, True, geometry)
+    map = TileMap(dict=sweden_municipalities, border=sweden_border_medium, dictYNorth=True, geometry="hexagon")
 
 elif viewing == "usa_states":
     map = TileMap(dict=USA, border=USA_border_simple, dictYNorth=True, geometry=geometry)
@@ -27,11 +28,12 @@ elif viewing == "south_america":
 
 elif viewing == "africa":
     map = TileMap(dict=africa, border=africa_border, dictYNorth=True, geometry=geometry)
+    #map = getMinimalCostMap(africa, africa_border, 5, True, "hexagon")
 
 elif viewing == "europe":
     map = TileMap(dict=europe, border=europe_border, dictYNorth=True, geometry=geometry)
 
-tilemap = True
+tilemap = False
 
 while running:
 
@@ -53,6 +55,8 @@ while running:
         if event.type == pg.KEYDOWN and event.key == pg.K_RETURN:
             map.convertToTileMap(cheate=False)
             tilemap = True
+        if event.type == pg.KEYDOWN and event.key == pg.K_9:
+            map.printDict()
 
     pg.draw.rect(screen, (255, 255, 255), (0,0,WIDTH, HEIGHT))
 
@@ -68,5 +72,6 @@ while running:
     else:
         map.drawTileMap(text=True)
 
+    
     pg.display.flip()
     clock.tick(60)
