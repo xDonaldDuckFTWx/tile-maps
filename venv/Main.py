@@ -1,6 +1,8 @@
 from Countries import printIDs, USA, USA_border, USA_border_simple, sweden, \
     sweden_border, sweden_border_medium, circle_border, sweden_municipalities, \
-    south_america, south_america_border, africa, africa_border, europe, europe_border
+    south_america, south_america_border, africa, africa_border, europe, europe_border, \
+    american_continent, american_continent_border, latin_america, latin_america_border
+
 from Classes import *
 
 
@@ -9,7 +11,7 @@ running = True
 updating = False
 
 viewing = "sweden_counties"
-geometry = "square"
+geometry = "hexagon"
 
 if viewing == "sweden_counties":
     #map = getMinimalCostMap(sweden, sweden_border, 50, True, geometry)
@@ -32,6 +34,14 @@ elif viewing == "africa":
 
 elif viewing == "europe":
     map = TileMap(dict=europe, border=europe_border, dictYNorth=True, geometry=geometry)
+    #map = getMinimalCostMap(europe, europe_border, 15, True, "hexagon")
+
+elif viewing == "american_continent" :
+    map = TileMap(american_continent, american_continent_border, True, geometry=geometry)
+
+elif viewing == "latin_america":
+    map = TileMap(latin_america, latin_america_border, True, geometry=geometry)
+    #map = getMinimalCostMap(latin_america, latin_america_border, 40, True, "hexagon")
 
 tilemap = False
 

@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="009d1836-e9e3-4eda-9be4-13797fec104a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/venv/DrawSavedMap.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/Classes.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Classes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/Countries.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Countries.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/DrawSavedMap.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/DrawSavedMap.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Pygame_setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Pygame_setup.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

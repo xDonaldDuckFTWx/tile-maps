@@ -612,13 +612,146 @@ europe = {
         },
     "outliers" : 
         {
-            "Iceland" : {"closest_to" : "Norway"},
-            "United Kingdom" : {"closest_to" : "France"},
-            "Ireland" : {"closest_to" : "France"}
+            #"Iceland" : {"closest_to" : "Norway", "coordinates": "?"},
+            #"United Kingdom" : {"closest_to" : "France"},
+            #"Ireland" : {"closest_to" : "France"}
         }
 
 }
 
+european_union = {
+    "regions" :
+        {
+            "Belgium" : {'coordinates': (4.580831590651697, 50.65244260645211), 'neighbors': ['Germany', 'France', 'Luxembourg', 'Netherlands']},
+            "Bulgaria" : {'coordinates': (25.195110953277123, 42.753118762021685), 'neighbors': ['Greece', 'Macedonia', 'Romania', 'Serbia']},
+            "Belarus" : {'coordinates': (27.981353986903663, 53.50634440475128), 'neighbors': ['Lithuania', 'Latvia', 'Poland', 'Russia', 'Ukraine']},
+            "Austria" : {'coordinates': (14.076158884337074, 47.61394879274627), 'neighbors': ['Switzerland', 'Czech Rep.', 'Germany', 'Hungary', 'Italy', 'Slovakia', 'Slovenia']},
+            "Czech Rep." : {'coordinates': (15.334558102365818, 49.77524529436901), 'neighbors': ['Austria', 'Germany', 'Poland', 'Slovakia']},
+            "Germany" : {'coordinates': (10.288485092742889, 51.13372269040781), 'neighbors': ['Switzerland', 'Belgium', 'Austria', 'Czech Rep.', 'Denmark', 'France', 'Luxembourg', 'Netherlands', 'Poland']},
+            "Denmark" : {'coordinates': (9.87637293767504, 56.06393446179454), 'neighbors': ['Germany']},
+            "Spain" : {'coordinates': (-3.6170206023873726, 40.34865610622673), 'neighbors': ['France', 'Portugal']},
+            "Estonia" : {'coordinates': (25.824728375319907, 58.64369524070696), 'neighbors': ['Latvia', 'Russia']},
+            "Finland" : {'coordinates': (26.211764697394553, 64.50409391856745), 'neighbors': ['Norway', 'Russia', 'Sweden']},
+            "France" : {'coordinates': (-2.8805991914037654, 42.45771810478777), 'neighbors': ['Switzerland', 'Belgium', 'Germany', 'Spain', 'Italy', 'Luxembourg']},
+            "Greece" : {'coordinates': (22.719813447095095, 39.066715899714), 'neighbors': ['Bulgaria', 'Macedonia']},
+            "Croatia" : {'coordinates': (16.566191106662163, 45.016234367971094), 'neighbors': ['Hungary', 'Montenegro', 'Serbia', 'Slovenia']},
+            "Hungary" : {'coordinates': (19.35762862774592, 47.19995117195425), 'neighbors': ['Austria', 'Croatia', 'Romania', 'Slovakia', 'Serbia', 'Slovenia', 'Ukraine']},
+            "Italy" : {'coordinates': (12.140788372235894, 42.75118305296426), 'neighbors': ['Switzerland', 'Austria', 'France', 'Slovenia']},
+            "Kosovo" : {'coordinates': (20.89535248119785, 42.579364825825884), 'neighbors': ['Macedonia', 'Montenegro', 'Serbia']},
+            "Luxembourg" : {'coordinates': (5.965223432343994, 49.765705074151), 'neighbors': ['Belgium', 'Germany', 'France']},
+            "Lithuania" : {'coordinates': (23.88064027584349, 55.28431948476603), 'neighbors': ['Belarus', 'Latvia', 'Poland', 'Russia']},
+            "Latvia" : {'coordinates': (24.833296149803438, 56.80717513427927), 'neighbors': ['Belarus', 'Estonia', 'Lithuania', 'Russia']},
+            "Moldova" : {'coordinates': (28.410482790803297, 47.20367642606755), 'neighbors': ['Romania', 'Ukraine']},
+            "Macedonia" : {'coordinates': (21.697896816140062, 41.60592893075937), 'neighbors': ['Bulgaria', 'Greece', 'Kosovo', 'Serbia']},
+            "Montenegro" : {'coordinates': (19.286180967198234, 42.789038331401294), 'neighbors': ['Croatia', 'Kosovo', 'Serbia']},
+            "Netherlands" : {'coordinates': (5.512217100965402, 52.298700374441786), 'neighbors': ['Belgium', 'Germany']},
+            "Norway" : {'coordinates': (15.468126122726208, 69.15685639713278), 'neighbors': ['Finland', 'Russia', 'Sweden']},
+            "Poland" : {'coordinates': (19.31101430844868, 52.14826021933187), 'neighbors': ['Belarus', 'Czech Rep.', 'Germany', 'Lithuania', 'Russia', 'Slovakia', 'Ukraine']},
+            "Portugal" : {'coordinates': (-8.055765588295687, 39.63404977497817), 'neighbors': ['Spain']},
+            "Romania" : {'coordinates': (24.943252494635384, 45.85710103573803), 'neighbors': ['Bulgaria', 'Hungary', 'Moldova', 'Serbia', 'Ukraine']},
+            "Russia" : {'coordinates': (40.87522325596443, 61.980840750712574), 'neighbors': ['Belarus', 'Estonia', 'Finland', 'Lithuania', 'Latvia', 'Norway', 'Poland', 'Ukraine']},
+            "Slovakia" : {'coordinates': (19.507657147433704, 48.7267113517275), 'neighbors': ['Austria', 'Czech Rep.', 'Hungary', 'Poland', 'Ukraine']},
+            "Serbia" : {'coordinates': (20.819651267430178, 44.233037203635156), 'neighbors': ['Bulgaria', 'Croatia', 'Hungary', 'Kosovo', 'Macedonia', 'Montenegro', 'Romania']},
+            "Sweden" : {'coordinates': (16.59626584684802, 62.811484968080336), 'neighbors': ['Finland', 'Norway']},
+            "Slovenia" : {'coordinates': (14.938152320795728, 46.125422059010376), 'neighbors': ['Austria', 'Croatia', 'Hungary', 'Italy']},
+            "Ukraine" : {'coordinates': (31.369533080356277, 48.97301796820208), 'neighbors': ['Belarus', 'Hungary', 'Moldova', 'Poland', 'Romania', 'Russia', 'Slovakia']}
+        },
+    "outliers" :
+        {
+            #"Iceland" : {"closest_to" : "Norway", "coordinates": "?"},
+            #"United Kingdom" : {"closest_to" : "France"},
+            #"Ireland" : {"closest_to" : "France"}
+        }
+
+}
+
+
 europe_border = [[39.90234375, 48.45835188280866], [47.8125, 60.326947742998414], [41.66015625, 66.23145747862573], [36.5625, 63.93737246791484], [32.34375, 67.13582938531948], [39.55078125, 66.30220547599842], [41.1328125, 67.7427590666639], [28.125, 70.95969716686398], [17.05078125, 69.71810669906763], [5.44921875, 61.938950426660604], [5.09765625, 57.89149735271034], [11.074218749999998, 59.17592824927136], [12.480468749999998, 55.7765730186677], [17.2265625, 56.46249048388979], [22.32421875, 65.73062649311031], [24.78515625, 65.73062649311031], [21.4453125, 62.99515845212052], [21.4453125, 60.23981116999893], [29.003906249999996, 60.326947742998414], [28.652343749999996, 59.5343180010956], [23.027343749999996, 59.265880628258095], [20.56640625, 55.178867663281984], [11.42578125, 54.470037612805754], [12.65625, 55.27911529201561], [9.4921875, 57.51582286553883], [7.3828125, 56.17002298293205], [8.0859375, 54.57206165565852], [-4.74609375, 48.69096039092549], [-1.58203125, 43.197167282501276], [-8.96484375, 43.45291889355465], [-9.31640625, 37.71859032558816], [-5.80078125, 36.03133177633187], [-0.52734375, 37.16031654673677], [4.04296875, 43.32517767999296], [9.31640625, 44.08758502824516], [15.292968749999998, 40.3130432088809], [13.18359375, 38.272688535980976], [15.644531250000002, 36.59788913307022], [18.28125, 40.17887331434696], [12.83203125, 44.715513732021336], [13.359375, 45.706179285330855], [19.335937499999996, 42.16340342422401], [19.335937499999996, 39.50404070558415], [21.4453125, 36.87962060502676], [24.08203125, 36.87962060502676], [23.5546875, 40.04443758460856], [28.125, 40.58058466412761], [30.05859375, 41.244772343082076], [28.30078125, 42.293564192170095], [31.113281249999996, 46.07323062540835], [33.57421875, 44.33956524809713], [36.38671875, 45.336701909968134], [39.90234375, 48.45835188280866]]
+
+
+american_continent = {
+    "regions" :
+        {
+            #"Bahamas" : {'coordinates': (-77.92997080393516, 25.515491725336627), 'neighbors': []},
+            "Belize" : {'coordinates': (-88.7034212529932, 17.197089911451542), 'neighbors': ['Guatemala', 'Mexico']},
+            "Canada" : {'coordinates': (-98.14238137209692, 61.469076145348886), 'neighbors': ['United States']},
+            "Costa Rica" : {'coordinates': (-84.17542309600944, 9.965671127464525), 'neighbors': ['Nicaragua', 'Panama']},
+            #"Cuba" : {'coordinates': (-78.96068490970252, 21.63175154102521), 'neighbors': []},
+            #"Dominican Rep." : {'coordinates': (-70.46235845697531, 18.884487087982254), 'neighbors': ['Haiti']},
+            #"Greenland" : {'coordinates': (-41.50018111492091, 74.7704876939898), 'neighbors': []},
+            "Guatemala" : {'coordinates': (-90.36945836053151, 15.699360612026899), 'neighbors': ['Belize', 'Honduras', 'Mexico', 'El Salvador']},
+            "Honduras" : {'coordinates': (-86.58996383801541, 14.822947081652927), 'neighbors': ['Guatemala', 'Nicaragua', 'El Salvador']},
+            #"Haiti" : {'coordinates': (-72.65801330535577, 18.90070069184333), 'neighbors': ['Dominican Rep.']},
+            #"Jamaica" : {'coordinates': (-77.32425480164892, 18.137636127868436), 'neighbors': []},
+            "Mexico" : {'coordinates': (-102.57634952398678, 23.93537190224481), 'neighbors': ['Belize', 'Guatemala', 'United States']},
+            "Nicaragua" : {'coordinates': (-85.02031850080247, 12.848190428036972), 'neighbors': ['Costa Rica', 'Honduras']},
+            "Panama" : {'coordinates': (-80.10916483549379, 8.530019388864654), 'neighbors': ['Costa Rica', 'Colombia']},
+            #"Puerto Rico" : {'coordinates': (-66.47922227695507, 18.2372245709719), 'neighbors': []},
+            "El Salvador" : {'coordinates': (-88.87290317032377, 13.726091625794199), 'neighbors': ['Guatemala', 'Honduras']},
+            #"Trinidad and Tobago" : {'coordinates': (-61.33036691444967, 10.428237089201879), 'neighbors': []},
+            "United States" : {'coordinates': (-112.59943837732717, 45.70562953540304), 'neighbors': ['Canada', 'Mexico']},
+            "Argentina" : {'coordinates': (-65.17536077114171, -35.446821489495115), 'neighbors': ['Bolivia', 'Brazil', 'Chile', 'Paraguay', 'Uruguay']},
+            "Bolivia" : {'coordinates': (-64.64140560603106, -16.728987015305826), 'neighbors': ['Argentina', 'Brazil', 'Chile', 'Peru', 'Paraguay']},
+            "Brazil" : {'coordinates': (-53.05434003576708, -10.80677364349891), 'neighbors': ['Argentina', 'Bolivia', 'Colombia', 'Guyana', 'Peru', 'Paraguay', 'Suriname', 'Uruguay', 'Venezuela']},
+            "Chile" : {'coordinates': (-71.52064394516434, -39.04701430994845), 'neighbors': ['Argentina', 'Bolivia']},
+            "Colombia" : {'coordinates': (-73.0777320869748, 3.9272138627097037), 'neighbors': ['Panama', 'Brazil', 'Ecuador', 'Peru', 'Venezuela']},
+            "Ecuador" : {'coordinates': (-78.38416674608372, -1.4547717055405802), 'neighbors': ['Colombia', 'Peru']},
+            #"Falkland Is." : {'coordinates': (-59.420972793110195, -51.71322176551184), 'neighbors': []},
+            "Guyana" : {'coordinates': (-58.97120310856249, 4.790225375174757), 'neighbors': ['Brazil', 'Suriname', 'Venezuela']},
+            "Peru" : {'coordinates': (-74.39180581684721, -9.19156290513455), 'neighbors': ['Bolivia', 'Brazil', 'Colombia', 'Ecuador']},
+            "Paraguay" : {'coordinates': (-58.38738783350569, -23.248041946292066), 'neighbors': ['Argentina', 'Bolivia', 'Brazil']},
+            "Suriname" : {'coordinates': (-55.91145629952074, 4.120008031758886), 'neighbors': ['Brazil', 'Guyana']},
+            "Uruguay" : {'coordinates': (-56.00327866654844, -32.78090436523081), 'neighbors': ['Argentina', 'Brazil']},
+            "Venezuela" : {'coordinates': (-66.16382727830239, 7.162132267639009), 'neighbors': ['Brazil', 'Colombia', 'Guyana']}
+        },
+    "outliers" :
+    {
+    }
+}
+
+american_continent_border = [[-87.890625, 69.41124235697256], [-101.6015625, 68.13885164925573], [-129.7265625, 70.37785394109224], [-137.8125, 69.53451763078358], [-156.4453125, 71.30079291637452], [-166.2890625, 69.16255790810501], [-158.55468749999997, 58.81374171570782], [-141.6796875, 60.413852350464914], [-132.1875, 55.3791104480105], [-125.5078125, 47.27922900257082], [-123.04687499999999, 37.71859032558816], [-114.60937499999999, 31.052933985705163], [-106.5234375, 21.289374355860424], [-103.0078125, 15.284185114076433], [-93.515625, 14.604847155053898], [-87.978515625, 12.811801316582619], [-86.396484375, 11.26461221250444], [-86.748046875, 10.660607953624776], [-80.5078125, 7.100892668623654], [-79.98046875, 7.972197714386879], [-78.57421875, 7.972197714386879], [-77.607421875, 3.5134210456400448], [-80.85937499999999, 0.26367094433665017], [-81.5625, -5.0909441750333855], [-76.81640625, -13.068776734357694], [-70.83984375, -18.47960905583197], [-74.35546875, -41.640078384678915], [-75.76171875, -48.57478991092885], [-74.53125, -53.748710796898976], [-69.43359375, -55.578344672182055], [-65.21484375, -55.07836723201513], [-68.90625, -51.835777520452474], [-65.7421875, -47.5172006978394], [-62.57812500000001, -41.50857729743933], [-48.33984375, -27.994401411046148], [-45.703125, -24.367113562651262], [-40.78125, -22.91792293614603], [-38.49609375, -12.554563528593656], [-34.27734375, -5.9657536710655235], [-48.8671875, -0.17578097424708533], [-52.734375, 6.489983332670651], [-58.00781249999999, 7.18810087117902], [-62.05078125, 11.350796722383672], [-70.6640625, 12.382928338487396], [-75.9375, 10.487811882056695], [-76.904296875, 8.754794702435618], [-78.837890625, 9.925565912405506], [-81.2109375, 9.318990192397905], [-83.6279296875, 11.480024648555816], [-83.14453125, 15.072123545811683], [-87.5390625, 16.804541076383455], [-86.484375, 22.105998799750566], [-90, 22.105998799750566], [-91.93359375, 19.642587534013032], [-95.625, 19.476950206488414], [-97.3828125, 23.885837699862005], [-94.39453125, 29.22889003019423], [-86.30859375, 30.29701788337205], [-81.5625, 25.16517336866393], [-80.15625, 26.588527147308614], [-80.33203125, 30.44867367928756], [-75.76171875, 34.74161249883172], [-65.7421875, 45.336701909968134], [-55.1953125, 52.5897007687178], [-74.8828125, 62.512317938386914], [-80.33203125, 53.12040528310657], [-92.98828125, 58.53959476664049], [-83.49609375, 68.46379955520322], [-87.890625, 69.41124235697256]]
+
+
+latin_america = {
+    "regions" :
+        {
+            #"Bahamas" : {'coordinates': (-77.92997080393516, 25.515491725336627), 'neighbors': []},
+            "Belize" : {'coordinates': (-88.7034212529932, 17.197089911451542), 'neighbors': ['Guatemala', 'Mexico']},
+            #"Canada" : {'coordinates': (-98.14238137209692, 61.469076145348886), 'neighbors': ['United States']},
+            "Costa Rica" : {'coordinates': (-84.17542309600944, 9.965671127464525), 'neighbors': ['Nicaragua', 'Panama']},
+            #"Cuba" : {'coordinates': (-78.96068490970252, 21.63175154102521), 'neighbors': []},
+            #"Dominican Rep." : {'coordinates': (-70.46235845697531, 18.884487087982254), 'neighbors': ['Haiti']},
+            #"Greenland" : {'coordinates': (-41.50018111492091, 74.7704876939898), 'neighbors': []},
+            "Guatemala" : {'coordinates': (-90.36945836053151, 15.699360612026899), 'neighbors': ['Belize', 'Honduras', 'Mexico', 'El Salvador']},
+            "Honduras" : {'coordinates': (-86.58996383801541, 14.822947081652927), 'neighbors': ['Guatemala', 'Nicaragua', 'El Salvador']},
+            #"Haiti" : {'coordinates': (-72.65801330535577, 18.90070069184333), 'neighbors': ['Dominican Rep.']},
+            #"Jamaica" : {'coordinates': (-77.32425480164892, 18.137636127868436), 'neighbors': []},
+            "Mexico" : {'coordinates': (-102.57634952398678, 23.93537190224481), 'neighbors': ['Belize', 'Guatemala']},
+            "Nicaragua" : {'coordinates': (-85.02031850080247, 12.848190428036972), 'neighbors': ['Costa Rica', 'Honduras']},
+            "Panama" : {'coordinates': (-80.10916483549379, 8.530019388864654), 'neighbors': ['Costa Rica', 'Colombia']},
+            #"Puerto Rico" : {'coordinates': (-66.47922227695507, 18.2372245709719), 'neighbors': []},
+            "El Salvador" : {'coordinates': (-88.87290317032377, 13.726091625794199), 'neighbors': ['Guatemala', 'Honduras']},
+            #"Trinidad and Tobago" : {'coordinates': (-61.33036691444967, 10.428237089201879), 'neighbors': []},
+            #"United States" : {'coordinates': (-112.59943837732717, 45.70562953540304), 'neighbors': ['Canada', 'Mexico']},
+            "Argentina" : {'coordinates': (-65.17536077114171, -35.446821489495115), 'neighbors': ['Bolivia', 'Brazil', 'Chile', 'Paraguay', 'Uruguay']},
+            "Bolivia" : {'coordinates': (-64.64140560603106, -16.728987015305826), 'neighbors': ['Argentina', 'Brazil', 'Chile', 'Peru', 'Paraguay']},
+            "Brazil" : {'coordinates': (-53.05434003576708, -10.80677364349891), 'neighbors': ['Argentina', 'Bolivia', 'Colombia', 'Guyana', 'Peru', 'Paraguay', 'Suriname', 'Uruguay', 'Venezuela']},
+            "Chile" : {'coordinates': (-71.52064394516434, -39.04701430994845), 'neighbors': ['Argentina', 'Bolivia']},
+            "Colombia" : {'coordinates': (-73.0777320869748, 3.9272138627097037), 'neighbors': ['Panama', 'Brazil', 'Ecuador', 'Peru', 'Venezuela']},
+            "Ecuador" : {'coordinates': (-78.38416674608372, -1.4547717055405802), 'neighbors': ['Colombia', 'Peru']},
+            #"Falkland Is." : {'coordinates': (-59.420972793110195, -51.71322176551184), 'neighbors': []},
+            "Guyana" : {'coordinates': (-58.97120310856249, 4.790225375174757), 'neighbors': ['Brazil', 'Suriname', 'Venezuela']},
+            "Peru" : {'coordinates': (-74.39180581684721, -9.19156290513455), 'neighbors': ['Bolivia', 'Brazil', 'Colombia', 'Ecuador']},
+            "Paraguay" : {'coordinates': (-58.38738783350569, -23.248041946292066), 'neighbors': ['Argentina', 'Bolivia', 'Brazil']},
+            "Suriname" : {'coordinates': (-55.91145629952074, 4.120008031758886), 'neighbors': ['Brazil', 'Guyana']},
+            "Uruguay" : {'coordinates': (-56.00327866654844, -32.78090436523081), 'neighbors': ['Argentina', 'Brazil']},
+            "Venezuela" : {'coordinates': (-66.16382727830239, 7.162132267639009), 'neighbors': ['Brazil', 'Colombia', 'Guyana']}
+        },
+    "outliers" :
+    {
+    }
+}
+
+latin_america_border = [[-76.2890625, 10.31491928581316], [-82.6171875, 11.695272733029402], [-83.3203125, 16.29905101458183], [-86.8359375, 16.636191878397664], [-87.1875, 22.105998799750566], [-91.23046875, 22.43134015636061], [-93.69140625, 20.46818922264095], [-97.03125, 25.958044673317843], [-116.01562499999999, 33.137551192346145], [-104.94140625, 18.47960905583197], [-94.5703125, 15.453680224345835], [-86.30859375, 11.178401873711785], [-81.03515625, 6.140554782450308], [-78.22265625, 6.664607562172573], [-81.2109375, -1.0546279422758742], [-81.2109375, -7.362466865535738], [-71.71875, -18.979025953255267], [-74.35546875, -37.99616267972812], [-76.11328125, -51.618016548773696], [-68.203125, -55.97379820507658], [-65.7421875, -55.07836723201513], [-68.203125, -51.39920565355377], [-65.21484375, -47.1598400130443], [-63.984375, -41.37680856570234], [-53.61328124999999, -34.45221847282653], [-34.80468749999999, -6.839169626342808], [-49.74609374999999, 1.5818302639606454], [-54.140625, 7.536764322084078], [-63.984375, 10.833305983642491], [-71.3671875, 13.068776734357694], [-76.2890625, 10.31491928581316]]
 
 

@@ -539,7 +539,7 @@ class TileMap(Map):
                 x = (x+0.5)*(self.stepSize/2)
                 y = (y + 0.5) * self.stepSize * 0.866
                 self.tile_coordinates[self.region_index_to_tile_index[region_index]] = [x, y]
-        self.colors = [(randint(100,255), 0, 0) for i in range(self.number_of_regions)]
+        self.colors = [(255, 0, 0) for i in range(self.number_of_regions)]
 
 
 
