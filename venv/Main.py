@@ -1,7 +1,8 @@
 from Countries import printIDs, USA, USA_border, USA_border_simple, sweden, \
     sweden_border, sweden_border_medium, circle_border, sweden_municipalities, \
     south_america, south_america_border, africa, africa_border, europe, europe_border, \
-    american_continent, american_continent_border, latin_america, latin_america_border
+    american_continent, american_continent_border, latin_america, latin_america_border, \
+    asia, asia_border
 
 from Classes import *
 
@@ -10,7 +11,7 @@ clock = pg.time.Clock()
 running = True
 updating = False
 
-viewing = "sweden_counties"
+viewing = "usa_states"
 geometry = "hexagon"
 
 if viewing == "sweden_counties":
@@ -24,13 +25,14 @@ elif viewing == "sweden_municipalities":
 
 elif viewing == "usa_states":
     map = TileMap(dict=USA, border=USA_border_simple, dictYNorth=True, geometry=geometry)
+    #map = getMinimalCostMap(USA, USA_border_simple, 25, True, "hexagon")
 
 elif viewing == "south_america":
     map = TileMap(dict=south_america, border=south_america_border, dictYNorth=True, geometry=geometry)
 
 elif viewing == "africa":
-    map = TileMap(dict=africa, border=africa_border, dictYNorth=True, geometry=geometry)
-    #map = getMinimalCostMap(africa, africa_border, 5, True, "hexagon")
+    #map = TileMap(dict=africa, border=africa_border, dictYNorth=True, geometry=geometry)
+    map = getMinimalCostMap(africa, africa_border, 15, True, "hexagon")
 
 elif viewing == "europe":
     map = TileMap(dict=europe, border=europe_border, dictYNorth=True, geometry=geometry)
@@ -42,6 +44,10 @@ elif viewing == "american_continent" :
 elif viewing == "latin_america":
     map = TileMap(latin_america, latin_america_border, True, geometry=geometry)
     #map = getMinimalCostMap(latin_america, latin_america_border, 40, True, "hexagon")
+
+elif viewing == "asia":
+    map = TileMap(asia, asia_border, True, geometry=geometry)
+    #map = getMinimalCostMap(asia, asia_border, 50, True, "hexagon")
 
 tilemap = False
 
@@ -71,7 +77,7 @@ while running:
     pg.draw.rect(screen, (255, 255, 255), (0,0,WIDTH, HEIGHT))
 
     if updating:
-        map.updateMap(iterations=150, k=4, noise=True)
+        map.updateMap(iterations=1500, k=4, noise=True)
         updating=False
 
     if not tilemap:

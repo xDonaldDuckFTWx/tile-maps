@@ -7,6 +7,7 @@
       <change beforePath="$PROJECT_DIR$/venv/Countries.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Countries.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/DrawSavedMap.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/DrawSavedMap.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Pygame_setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Pygame_setup.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,6 +32,7 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -44,7 +46,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Main">
+  <component name="RunManager" selected="Python.DrawSavedMap">
     <configuration name="Countries" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Tile Maps Clean" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -110,8 +112,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.Main" />
         <item itemvalue="Python.DrawSavedMap" />
+        <item itemvalue="Python.Main" />
         <item itemvalue="Python.Countries" />
       </list>
     </recent_temporary>
@@ -134,7 +136,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

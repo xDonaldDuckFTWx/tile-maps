@@ -323,7 +323,7 @@ class TileMap(Map):
             raise Exception("Border area is 0")
 
         if noise:
-            noise = np.random.normal(0, 0.1, self.number_of_regions * 2)
+            noise = np.random.normal(0, 0.5, self.number_of_regions * 2)
             for i in range(self.number_of_regions):
                 self.regions[i].centroid = (
                 self.regions[i].centroid[0] + noise[2 * i], self.regions[i].centroid[1] + noise[2 * i + 1])
