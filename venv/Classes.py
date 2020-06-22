@@ -56,12 +56,27 @@ class Outlier:
         self.centroid = coordinate
 
 class Map:
-    def __init__(self, dict=None, border=[], dictYNorth=True, dictCoordinatesGPS=True):
+    def __init__(self, dict=None, dictYNorth=True):
         self.number_of_regions = 0
         self.number_of_outliers = 0
         self.regions = []
         self.out_lier_regions = []
         self.region_index_to_tile_index = None
+        dictCoordinatesGPS = dict["GPS"]
+        border = dict["border"]
+        index = 1
+        new_border = []
+        while index < len(border):
+            if border[index] == "(" or border[index] == "[":
+                start = index
+                while (border[index] != ")" and border[index] != "]"):
+                    index += 1
+                end = index
+                new_border.append([float(i) for i in border[start + 1:end].split(", ")])
+            else:
+                index += 1
+        border = new_border
+
         if dictYNorth:
             self.border = border
         else:
@@ -69,46 +84,24 @@ class Map:
 
         if dict is not None:
             for key in dict["regions"].keys():
-                x, y = dict["regions"][key]["coordinates"]
+                x, y = [float(i) for i in dict["regions"][key]["coordinates"][1:-1].split(", ")]
                 if not dictYNorth: y = 0-y
                 self.addRegion((x, y))
                 self.regions[-1].name = key
             for key in dict["regions"].keys():
+                dict["regions"][key]["neighbors"] = [i[1:-1] for i in dict["regions"][key]["neighbors"][1:-1].split(", ")]
                 for neighbor in dict["regions"][key]["neighbors"]:
                     self.addConnection(list(dict["regions"].keys()).index(key), list(dict["regions"].keys()).index(neighbor))
             for key in dict["outliers"].keys():
-                self.addOutlierRegion(list(dict["regions"].keys()).index(dict["outliers"][key]["closest_to"]), dict["outliers"][key]["coordinates"], name=key)
+                x, y = [float(i) for i in dict["outliers"][key]["coordinates"][1:-1].split(", ")]
+                self.addOutlierRegion(list(dict["regions"].keys()).index(dict["outliers"][key]["closest_to"]), (x, y), name=key)
 
             if dictCoordinatesGPS:
                 self.transformGPStoFlat()
 
             self.standardize()
 
-            """" Standardize coordinates so that all are in ([0, WIDTH], [0, HEIGHT])
-            allX = [region.centroid[0] for region in self.regions] + [border_point[0] for border_point in self.border]
-            allY = [region.centroid[1] for region in self.regions] + [border_point[1] for border_point in self.border]
-            maxX, maxY, minX, minY = max(allX), max(allY), min(allX), min(allY)
 
-            border_size = 75
-            drawing_width = WIDTH - 2 * border_size
-            drawing_height = HEIGHT - 2 * border_size
-
-            transform_value = min(drawing_width / (maxX - minX), drawing_height / (maxY - minY))
-
-            shiftX = 0 - minX
-            shiftY = 0 - minY
-            midX = (WIDTH - (maxX + shiftX) * transform_value) / 2
-            midY = (HEIGHT - (maxY + shiftY) * transform_value) / 2
-
-            for region in self.regions:
-                x, y = region.centroid
-                region.centroid = ((x + shiftX) * transform_value + border_size + midX,
-                                   (y + shiftY) * transform_value + border_size + midY)
-
-            for point_index in range(len(self.border)):
-                x, y = self.border[point_index]
-                self.border[point_index] =  ((x + shiftX) * transform_value + border_size + midX,
-                                            (y + shiftY) * transform_value + border_size + midY)"""
 
     def transformGPStoFlat(self):
         # It is assumed all region coordinates are GPS coordinates
@@ -200,14 +193,12 @@ class Map:
 
 
 class TileMap(Map):
-    def __init__(self, dict=None, border=[], dictYNorth=True, geometry="square", dictCoordinatesGPS=True):
-        Map.__init__(self, dict=dict, border=border, dictYNorth=dictYNorth, dictCoordinatesGPS=dictCoordinatesGPS)
+    def __init__(self, dict=None, dictYNorth=True, geometry="square"):
+        Map.__init__(self, dict=dict, dictYNorth=dictYNorth)
         self.geometry = geometry
         self.tile_coordinate_filled = {}
         self.tile_coordinates = []
         self.grid_shift_x, self.grid_shift_y = 0, 0
-        if not border:
-            raise Exception("Tile map initiated without border")
         self.getArea()
         self.region_area = 1
         #if self.geometry == "hexagon": self.region_area = 0.65
@@ -225,14 +216,7 @@ class TileMap(Map):
 
     #sets self.area to the area contained within the country border
     def getArea(self):
-        #Shoelace Theorem on border
-        """area = 0
-        border_points = len(self.border)
-        for i in range(border_points):
-            area += (self.border[i][0] * self.border[(i + 1) % border_points][1] -
-                     self.border[(i + 1) % border_points][0]*self.border[i][1])
-        area = abs(area)/2
-        self.area = area"""
+
         self.border_polygon = Polygon(self.border)
         self.area = self.border_polygon.area
         self.stepSize = (self.area / self.number_of_regions) ** 0.5

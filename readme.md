@@ -41,6 +41,8 @@ Run DrawSavedMap.py
 with:
 drawSavedMap(saved_map, transformchange=0, text=bool)
 
+simple use: change the drawing variable to one of the listed available strings
+
 Key shortcuts: WASD moves screen, 1,2 zooms, mouse and arrow keys edits maps, spacebar prints edited map.
 
 
