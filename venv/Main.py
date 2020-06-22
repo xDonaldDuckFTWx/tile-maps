@@ -1,8 +1,8 @@
-from Countries import printIDs, USA, USA_border, USA_border_simple, sweden, \
+from Countries import printIDs, USA, USA_border_simple, sweden, india_main, india_border_main,\
     sweden_border, sweden_border_medium, circle_border, sweden_municipalities, \
     south_america, south_america_border, africa, africa_border, europe, europe_border, \
     american_continent, american_continent_border, latin_america, latin_america_border, \
-    asia, asia_border
+    asia, asia_border, india_side, india_border_side, china, china_border
 
 from Classes import *
 
@@ -11,7 +11,7 @@ clock = pg.time.Clock()
 running = True
 updating = False
 
-viewing = "usa_states"
+viewing = "china"
 geometry = "hexagon"
 
 if viewing == "sweden_counties":
@@ -22,25 +22,21 @@ if viewing == "sweden_counties":
 elif viewing == "sweden_municipalities":
     #map = getMinimalCostMap(sweden_municipalities, sweden_border, 25, True, geometry)
     map = TileMap(dict=sweden_municipalities, border=sweden_border_medium, dictYNorth=True, geometry="hexagon")
-
 elif viewing == "usa_states":
     map = TileMap(dict=USA, border=USA_border_simple, dictYNorth=True, geometry=geometry)
     #map = getMinimalCostMap(USA, USA_border_simple, 25, True, "hexagon")
 
 elif viewing == "south_america":
     map = TileMap(dict=south_america, border=south_america_border, dictYNorth=True, geometry=geometry)
-
 elif viewing == "africa":
     #map = TileMap(dict=africa, border=africa_border, dictYNorth=True, geometry=geometry)
     map = getMinimalCostMap(africa, africa_border, 15, True, "hexagon")
-
 elif viewing == "europe":
     map = TileMap(dict=europe, border=europe_border, dictYNorth=True, geometry=geometry)
     #map = getMinimalCostMap(europe, europe_border, 15, True, "hexagon")
 
 elif viewing == "american_continent" :
     map = TileMap(american_continent, american_continent_border, True, geometry=geometry)
-
 elif viewing == "latin_america":
     map = TileMap(latin_america, latin_america_border, True, geometry=geometry)
     #map = getMinimalCostMap(latin_america, latin_america_border, 40, True, "hexagon")
@@ -48,6 +44,13 @@ elif viewing == "latin_america":
 elif viewing == "asia":
     map = TileMap(asia, asia_border, True, geometry=geometry)
     #map = getMinimalCostMap(asia, asia_border, 50, True, "hexagon")
+
+elif viewing == "india_main":
+    map = TileMap(india_main, india_border_main, True, geometry=geometry, dictCoordinatesGPS=False)
+elif viewing == "india_side":
+    map = TileMap(india_side, india_border_side, True, geometry=geometry, dictCoordinatesGPS=False)
+elif viewing == "china":
+    map = TileMap(china, china_border, True, geometry=geometry, dictCoordinatesGPS=False)
 
 tilemap = False
 
@@ -88,6 +91,6 @@ while running:
     else:
         map.drawTileMap(text=True)
 
-    
+
     pg.display.flip()
     clock.tick(60)

@@ -72,7 +72,7 @@ class Map:
                 x, y = dict["regions"][key]["coordinates"]
                 if not dictYNorth: y = 0-y
                 self.addRegion((x, y))
-                self.regions[-1].name = key[:10]
+                self.regions[-1].name = key
             for key in dict["regions"].keys():
                 for neighbor in dict["regions"][key]["neighbors"]:
                     self.addConnection(list(dict["regions"].keys()).index(key), list(dict["regions"].keys()).index(neighbor))
@@ -200,8 +200,8 @@ class Map:
 
 
 class TileMap(Map):
-    def __init__(self, dict=None, border=[], dictYNorth=True, geometry="square"):
-        Map.__init__(self, dict=dict, border=border, dictYNorth=dictYNorth)
+    def __init__(self, dict=None, border=[], dictYNorth=True, geometry="square", dictCoordinatesGPS=True):
+        Map.__init__(self, dict=dict, border=border, dictYNorth=dictYNorth, dictCoordinatesGPS=dictCoordinatesGPS)
         self.geometry = geometry
         self.tile_coordinate_filled = {}
         self.tile_coordinates = []

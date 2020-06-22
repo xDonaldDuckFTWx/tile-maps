@@ -42,3 +42,17 @@ with:
 drawSavedMap(saved_map, transformchange=0, text=bool)
 
 Key shortcuts: WASD moves screen, 1,2 zooms, mouse and arrow keys edits maps, spacebar prints edited map.
+
+
+
+To create new map template for coverting to tile map:
+Run CreateMap.py
+image = pg.load("*path*") to get desired background image
+image = pg.transform.scale(image, (WIDTH, HEIGHT))
+create_map = CreateMap(image=image)
+
+Keys:
+mouse + no mod  : add region
+mouse + shift   : create vertice between two regions
+mouse + ctrl    : create border polygon
+spacebar prints out map dict and border
