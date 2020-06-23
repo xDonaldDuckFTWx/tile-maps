@@ -1,8 +1,9 @@
 from Pygame_setup import *
 
-drawing = "latin_america" 
-# Possibilities: "world", "europe", "africa", "asia", "american_continent", "latin_america", 
-# "usa_states", "india_provinces", "china_provinces", "sweden_counties", "sweden_municipalities"
+drawing = "europe"
+# Possibilities: "world", "europe", "africa", "asia", "american_continent", "latin_america", "china_provinces",
+# "usa_states", "india_provinces", "sweden_counties", "sweden_municipalities", "european_union_member_states
+desired_geometry = "hexagon"
 
 
 
@@ -36,7 +37,7 @@ def drawSavedMap(dict, width=WIDTH, height=HEIGHT, text=True, transformchange=0,
                 if event.key == pg.K_1:
                     transformchange += 5
                 elif event.key == pg.K_2:
-                    transformchange -= 5
+                    transformchange = max(transformchange - 5, 0)
                 elif event.key == pg.K_a:
                     Xborder += 15
                 elif event.key == pg.K_d:
@@ -63,6 +64,20 @@ def drawSavedMap(dict, width=WIDTH, height=HEIGHT, text=True, transformchange=0,
                 selecting = True
             if event.type == pg.MOUSEBUTTONUP:
                 selecting = False
+        keys = pg.key.get_pressed()
+        if keys[pg.K_a]:
+            Xborder += 3
+        if keys[pg.K_d]:
+            Xborder -= 3
+        if keys[pg.K_w]:
+            Yborder += 3
+        if keys[pg.K_s]:
+            Yborder -= 3
+        if keys[pg.K_1]:
+            transformchange += 1
+        if keys[pg.K_2]:
+            transformchange = max(transformchange - 1, 0)
+
 
         border = 10
         geometry = dict["geometry"]
@@ -77,19 +92,33 @@ def drawSavedMap(dict, width=WIDTH, height=HEIGHT, text=True, transformchange=0,
         positions = {}
 
         if geometry == "hexagon":
-            for region in regions.keys():
-                x, y = regions[region]
-                x = x*transform*0.5 + border + Xborder
-                y = y*transform*0.866 + border*0.866 + Yborder
-                s = transform/2
-                corner_points = [(x, y + s), (x + 0.866 * s, y + s / 2), (x + 0.866 * s, y - s / 2), (x, y - s),
-                                 (x - 0.866 * s, y - s / 2), (x - 0.866 * s, y + s / 2)]
-                corner_points = [(int(x), int(y)) for x, y in corner_points]
-                positions[region] = (x, y)
+            if desired_geometry=="romb":
+                for region in regions.keys():
+                    x, y = regions[region]
+                    x = x * transform * 0.5 + border + Xborder
+                    y = y * transform * 0.866 + border * 0.866 + Yborder
+                    s = transform / 2
+                    corner_points = [(x, y + 1.5*s), (x + s*0.9, y), (x, y - 1.5*s), (x - s*0.9, y)]
+                    corner_points = [(int(x), int(y)) for x, y in corner_points]
+                    positions[region] = (x, y)
 
-                color = (255, 50, 50)
+                    color = (255, 50, 50)
 
-                pg.draw.polygon(screen, color, corner_points)
+                    pg.draw.polygon(screen, color, corner_points)
+            else:
+                for region in regions.keys():
+                    x, y = regions[region]
+                    x = x*transform*0.5 + border + Xborder
+                    y = y*transform*0.866 + border*0.866 + Yborder
+                    s = transform/2
+                    corner_points = [(x, y + s), (x + 0.866 * s, y + s / 2), (x + 0.866 * s, y - s / 2), (x, y - s),
+                                     (x - 0.866 * s, y - s / 2), (x - 0.866 * s, y + s / 2)]
+                    corner_points = [(int(x), int(y)) for x, y in corner_points]
+                    positions[region] = (x, y)
+
+                    color = (255, 50, 50)
+
+                    pg.draw.polygon(screen, color, corner_points)
 
                 letters = 8
                 region_name_text = myfont.render(region[:letters], 1, (255, 255, 255))
@@ -126,6 +155,7 @@ def drawSavedMap(dict, width=WIDTH, height=HEIGHT, text=True, transformchange=0,
         pg.display.flip()
 
 def printMove(dict, y=0, x=0):
+    print("DICT Data:")
     print("{")
     print('   "geometry" : "{}",'.format(dict["geometry"]))
     print('   "regions" : ')
@@ -137,46 +167,24 @@ def printMove(dict, y=0, x=0):
         print('         "{}" : ({}, {}),'.format(region, X, Y))
     print("      }")
     print("}")
+    print("\n")
+    print("JSON Data:")
+    print('{}"geometry":"{}","regions":{}'.format("{", dict["geometry"], "{"), end="")
+    i = 0
+    for region in dict["regions"].keys():
+        X, Y = dict["regions"][region]
+        X += x
+        Y += y
+        print('"{}":"({}, {})"'.format(region, X, Y),end="")
+        i += 1
+        if i < len(dict["regions"].keys()):
+            print(",",end="")
+    print("}}")
 
 
+with open("maps/final_maps/{}.json".format(drawing)) as f:
+    tilemap = json.load(f)
 
-
-if drawing=="world":
-    with open("maps/final_maps/world.json") as f:
-        tilemap = json.load(f)
-elif drawing=="china":
-    with open("maps/final_maps/china_provinces.json") as f:
-        tilemap = json.load(f)
-elif drawing=="usa":
-    with open("maps/final_maps/usa_states.json") as f:
-        tilemap = json.load(f)
-elif drawing=="india":
-    with open("maps/final_maps/india_provinces.json") as f:
-        tilemap = json.load(f)
-elif drawing=="africa":
-    with open("maps/final_maps/africa.json") as f:
-        tilemap = json.load(f)
-elif drawing=="asia":
-    with open("maps/final_maps/asia.json") as f:
-        tilemap = json.load(f)
-elif drawing=="europe":
-    with open("maps/final_maps/europe.json") as f:
-        tilemap = json.load(f)
-elif drawing=="european_union":
-    with open("maps/final_maps/european_union_member_states.json") as f:
-        tilemap = json.load(f)
-elif drawing=="sweden_counties":
-    with open("maps/final_maps/sweden_counties.json") as f:
-        tilemap = json.load(f)
-elif drawing=="sweden_municipalities":
-    with open("maps/final_maps/sweden_municipalities.json") as f:
-        tilemap = json.load(f)
-elif drawing=="american_continent":
-    with open("maps/final_maps/american_continent.json") as f:
-        tilemap = json.load(f)
-elif drawing=="latin_america":
-    with open("maps/final_maps/latin_america.json") as f:
-        tilemap = json.load(f)
 
 for region in tilemap["regions"].keys():
     x, y = tilemap["regions"][region][1:-1].split()

@@ -18,6 +18,7 @@ class CreateMap:
         self.selected   = []
         self.border = []
         self.mode = "region"
+        self.outliers = []
 
         if progress is not None:
             if "regions" in progress.keys():
@@ -148,6 +149,9 @@ class CreateMap:
             if len(region.neighbors) != 0:
                 print('      "{}" : {}"coordinates" : {}, "neighbors" : {} {},'.format(
                     region.name, "{", region.coordinates, [self.regions[i].name for i in region.neighbors], "}"))
+            else:
+                self.outliers.append(region)
+                self.regions.remove(region)
         print("   },")
         print('   "outliers" : ')
         print("   {")
@@ -162,9 +166,25 @@ class CreateMap:
         print("Border:")
         print(self.border)
 
+        print("JSON Data:")
+        print('{"GPS":false,"regions":{',end="")
+        for region_index in range(len(self.regions)):
+            region = self.regions[region_index]
+            print('"{}":{}"coordinates":"{}","neighbors":"{}"{}'.format(region.name,"{", region.coordinates, [self.regions[i].name for i in region.neighbors], "}"),end="")
+            if region_index < len(self.regions) - 1: print(",",end="")
+        print("},",end="")
+        print('"outliers":{',end="")
+        for outlier_index in range(len(self.outliers)):
+            region = self.outliers[outlier_index]
+            print('"{}":{}"coordinates":"{}","closest_to":"{}"{}'.format(region.name, "{", region.coordinates,
+                                                                         self.regions[self.getClosestNonOutlierRegion(region.coordinates)].name, "}"), end="")
+            if outlier_index < len(self.outliers) - 1: print(",", end="")
+        print('{},"border":"{}"{}'.format("}",self.border, "}"))
 
 
-image = pg.image.load("images/china.jpg")
+
+
+image = pg.image.load("images/germany.jpg")
 image = pg.transform.scale(image, (WIDTH, HEIGHT))
 create_map = CreateMap(image=image)
 

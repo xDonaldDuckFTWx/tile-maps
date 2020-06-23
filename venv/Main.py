@@ -5,7 +5,7 @@ clock = pg.time.Clock()
 running = True
 updating = False
 
-viewing = "sweden_counties"   # options: "world", "europe", "africa", "asia", "american_continent", "latin_america",
+viewing = "usa_states"   # options: "europe", "africa", "asia", "american_continent", "latin_america",
 # "usa_states", "india_main", "india_side", "china_provinces", "sweden_counties", "sweden_municipalities"
 geometry = "hexagon"
 

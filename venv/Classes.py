@@ -638,6 +638,7 @@ class TileMap(Map):
         return total_cost
     
     def printDict(self):
+        print("DICT Data:")
         print("{")
         print('"geometry" : "{}",'.format(self.geometry))
         print('"regions" : ')
@@ -647,6 +648,17 @@ class TileMap(Map):
         print('      "{}" : {}'.format(self.regions[self.number_of_regions - 1].name, self.region_to_tile_coordinate[self.number_of_regions - 1]))
         print("   }")
         print("}")
+        print("\n")
+
+
+        print("JSON Data:")
+        print('{}"geometry":"{}","regions":{}'.format("{", self.geometry, "{"), end="")
+        for region_index in range(self.number_of_regions - 1):
+            region = self.regions[region_index]
+            print('"{}":"{}",'.format(region.name, self.region_to_tile_coordinate[region_index]),end="")
+        print('"{}":"{}"{}'.format(self.regions[-1].name, self.region_to_tile_coordinate[self.number_of_regions - 1], "}}"))
+
+
 
     
 def getMinimalCostMap(dict, border, number_of_maps, dictYNorth=True, geometry="square", distance_weight=1, adjacency_weight=1, angle_weight=1, roughness_weight=1):
