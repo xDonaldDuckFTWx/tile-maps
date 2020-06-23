@@ -1,8 +1,8 @@
 from Pygame_setup import *
 
-drawing = "world"
+drawing = "american_continent"
 # Possibilities: "world", "europe", "africa", "asia", "american_continent", "latin_america", "china_provinces",
-# "usa_states", "india_provinces", "sweden_counties", "sweden_municipalities", "european_union_member_states
+# "usa_states", "india_provinces", "sweden_counties", "sweden_municipalities", "european_union_member_states", "europe_full"
 desired_geometry = "hexagon"
 
 
@@ -197,7 +197,6 @@ for region in tilemap["regions"].keys():
 #printMove(africa, 9, 16)
 #printMove(eu, 0, 18)
 printMove(tilemap, 5, 36) #asia
-
 
 
 drawSavedMap(tilemap, transformchange=0, text=True)
