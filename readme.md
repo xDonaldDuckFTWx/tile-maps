@@ -2,9 +2,14 @@
 Generate Tile Maps
 
 Usage:
-If using with current main file:
-Press spacebar to update map. Use arrow keys to shift grid.
-When the tile points turn from green to red, press enter.
+run:
+python Main.py
+
+Draw a map. Nodes = regions, left click
+Vertices between node represent neighbouring nodes, shift click on two regions
+Border: country border, ctrl click to draw border polygon
+
+
 
 
 Otherwise:

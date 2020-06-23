@@ -55,6 +55,8 @@ class CreateMap:
                     exit()
                 if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                     self.printData()
+                    self.updateCache()
+                    return None
                 if mode == "neighbor":
                     if event.type == pg.KEYUP and event.mod == pg.KMOD_SHIFT:
                         self.selected = []
@@ -181,11 +183,31 @@ class CreateMap:
             if outlier_index < len(self.outliers) - 1: print(",", end="")
         print('{},"border":"{}"{}'.format("}",self.border, "}"))
 
+    def updateCache(self):
+        jsonString = '{"GPS":false,"regions":{'
+        for region_index in range(len(self.regions)):
+            region = self.regions[region_index]
+            jsonString += '"{}":{}"coordinates":"{}","neighbors":"{}"{}'.format(region.name, "{", region.coordinates,
+                                                                    [self.regions[i].name for i in region.neighbors], "}")
+            if region_index < len(self.regions) - 1: jsonString += ","
+        jsonString += '},"outliers":{'
+        for outlier_index in range(len(self.outliers)):
+            region = self.outliers[outlier_index]
+            jsonString += '"{}":{}"coordinates":"{}","closest_to":"{}"{}'.format(region.name, "{", region.coordinates,
+                                                                         self.regions[self.getClosestNonOutlierRegion(
+                                                                             region.coordinates)].name, "}")
+            if outlier_index < len(self.outliers) - 1: jsonString += ","
+        jsonString += '{},"border":"{}"{}'.format("}", self.border, "}")
+
+        with open("maps/pre_maps/cache.json", "r+") as f:
+            f.seek(0)
+            f.truncate(0)
+            f.write(jsonString)
+            f.close()
 
 
-
-image = pg.image.load("images/germany.jpg")
-image = pg.transform.scale(image, (WIDTH, HEIGHT))
-create_map = CreateMap(image=image)
-
+if __name__ == "__main__":
+    image = pg.image.load("images/germany.jpg")
+    image = pg.transform.scale(image, (WIDTH, HEIGHT))
+    create_map = CreateMap(image=image)
 

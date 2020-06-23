@@ -1,11 +1,11 @@
 from Pygame_setup import *
-
-drawing = "american_continent"
+"""
+drawing = "europe_full"
 # Possibilities: "world", "europe", "africa", "asia", "american_continent", "latin_america", "china_provinces",
 # "usa_states", "india_provinces", "sweden_counties", "sweden_municipalities", "european_union_member_states", "europe_full"
 desired_geometry = "hexagon"
 
-
+"""
 
 def select(positions):
     mousex, mousey = pg.mouse.get_pos()
@@ -18,7 +18,16 @@ def select(positions):
     return (distances[minDis], positions[distances[minDis]])
 
 
-def drawSavedMap(dict, width=WIDTH, height=HEIGHT, text=True, transformchange=0, Xborder=10, Yborder=10):
+def drawSavedMap(file, width=WIDTH, height=HEIGHT, text=True, transformchange=0, Xborder=10, Yborder=10, desired_geometry="hexagon"):
+    with open(file) as f:
+        tilemap = json.load(f)
+
+    for region in tilemap["regions"].keys():
+        x, y = tilemap["regions"][region][1:-1].split()
+        x = x[:-1]
+        tilemap["regions"][region] = (int(x), int(y))
+    dict = tilemap
+
     myfont = pg.font.SysFont("Times New Roman", 12)
 
     running = True
@@ -120,7 +129,7 @@ def drawSavedMap(dict, width=WIDTH, height=HEIGHT, text=True, transformchange=0,
 
                     pg.draw.polygon(screen, color, corner_points)
 
-                    letters = 8
+                    letters = 20
                     region_name_text = myfont.render(region[:letters], 1, (255, 255, 255))
 
                     if text:
@@ -182,21 +191,13 @@ def printMove(dict, y=0, x=0):
     print("}}")
 
 
-with open("maps/final_maps/{}.json".format(drawing)) as f:
-    tilemap = json.load(f)
-
-
-for region in tilemap["regions"].keys():
-    x, y = tilemap["regions"][region][1:-1].split()
-    x = x[:-1]
-    tilemap["regions"][region] = (int(x), int(y))
 
 
 
 #printMove(american_continent, 4, 0)
 #printMove(africa, 9, 16)
 #printMove(eu, 0, 18)
-printMove(tilemap, 5, 36) #asia
+#printMove(tilemap, 5, 36) #asia
 
-
-drawSavedMap(tilemap, transformchange=0, text=True)
+if __name__ == "__main__":
+    drawSavedMap("maps/full_maps/world.json", transformchange=0, text=True)
