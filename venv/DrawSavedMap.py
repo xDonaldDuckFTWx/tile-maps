@@ -28,7 +28,7 @@ def drawSavedMap(file, width=WIDTH, height=HEIGHT, text=True, transformchange=0,
         tilemap["regions"][region] = (int(x), int(y))
     dict = tilemap
 
-    myfont = pg.font.SysFont("Times New Roman", 12)
+    
 
     running = True
     selecting = False
@@ -200,4 +200,4 @@ def printMove(dict, y=0, x=0):
 #printMove(tilemap, 5, 36) #asia
 
 if __name__ == "__main__":
-    drawSavedMap("maps/full_maps/world.json", transformchange=0, text=True)
+    drawSavedMap("maps/final_maps/world.json", transformchange=0, text=True)

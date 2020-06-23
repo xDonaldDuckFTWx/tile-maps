@@ -71,4 +71,6 @@ def generate(file):
         clock.tick(60)
 
 if __name__ == "__main__":
-    generate("asia")
+    from DrawSavedMap import *
+    generate("maps/pre_maps/asia.json")
+    drawSavedMap("maps/final_maps/cache.json")

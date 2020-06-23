@@ -5,6 +5,6 @@ from math import exp, pi, log, tan, fmod, atan, asin
 import json
 
 pg.init()
-
-WIDTH, HEIGHT = 520, 600
+myfont = pg.font.SysFont("Times New Roman", 14)
+WIDTH, HEIGHT = 800, 600
 screen = pg.display.set_mode((WIDTH, HEIGHT))

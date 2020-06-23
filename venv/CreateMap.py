@@ -12,7 +12,7 @@ class Region:
 
 
 class CreateMap:
-    def __init__(self, image=None, progress = None):
+    def __init__(self, image=None, progress = None, user_friendly=True):
         self.textinput = TextInput()
         self.regions    = []
         self.selected   = []
@@ -39,6 +39,9 @@ class CreateMap:
                 screen.fill((255, 255, 255))
             else:
                 screen.blit(image, (0,0))
+            if user_friendly:
+                text = myfont.render("Draw a map! Add node: Left click. Add vertice: Shift click. Draw border polygon: Ctrl click. Done? Spacebar.", 1, (0, 0, 0))
+                screen.blit(text, (10,10))
 
             if pg.key.get_mods() & pg.KMOD_SHIFT:
                 mode = "neighbor"
