@@ -1,6 +1,6 @@
 from Pygame_setup import *
 
-drawing = "europe"
+drawing = "world"
 # Possibilities: "world", "europe", "africa", "asia", "american_continent", "latin_america", "china_provinces",
 # "usa_states", "india_provinces", "sweden_counties", "sweden_municipalities", "european_union_member_states
 desired_geometry = "hexagon"
@@ -120,17 +120,17 @@ def drawSavedMap(dict, width=WIDTH, height=HEIGHT, text=True, transformchange=0,
 
                     pg.draw.polygon(screen, color, corner_points)
 
-                letters = 8
-                region_name_text = myfont.render(region[:letters], 1, (255, 255, 255))
+                    letters = 8
+                    region_name_text = myfont.render(region[:letters], 1, (255, 255, 255))
 
-                if text:
-                    width, height = region_name_text.get_rect().width, region_name_text.get_rect().height
-                    while width > 0.866 * s * 2 - 3:
-                        letters -= 1
-                        region_name_text = myfont.render(region[:letters] + ".", 1, (255, 255, 255))
+                    if text:
                         width, height = region_name_text.get_rect().width, region_name_text.get_rect().height
-                    text_position = (int(x - width / 2), int(y - height / 2))
-                    screen.blit(region_name_text, text_position)
+                        while width > 0.866 * s * 2 - 3:
+                            letters -= 1
+                            region_name_text = myfont.render(region[:letters] + ".", 1, (255, 255, 255))
+                            width, height = region_name_text.get_rect().width, region_name_text.get_rect().height
+                        text_position = (int(x - width / 2), int(y - height / 2))
+                        screen.blit(region_name_text, text_position)
 
         elif geometry == "square":
             for region in regions.keys():
@@ -196,7 +196,7 @@ for region in tilemap["regions"].keys():
 #printMove(american_continent, 4, 0)
 #printMove(africa, 9, 16)
 #printMove(eu, 0, 18)
-#printMove(asia, 2, 36)
+printMove(tilemap, 5, 36) #asia
 
 
 
