@@ -18,7 +18,16 @@ def select(positions):
     return (distances[minDis], positions[distances[minDis]])
 
 
-def drawSavedMap(file, width=WIDTH, height=HEIGHT, text=True, transformchange=0, Xborder=10, Yborder=10, desired_geometry="hexagon"):
+def drawSavedMap(file,
+                 width=WIDTH,
+                 height=HEIGHT,
+                 text=True,
+                 transformchange=0,
+                 Xborder=10,
+                 Yborder=10,
+                 desired_geometry="hexagon",
+                 browsing = False,
+                 display_name = None):
     with open(file) as f:
         tilemap = json.load(f)
 
@@ -46,7 +55,7 @@ def drawSavedMap(file, width=WIDTH, height=HEIGHT, text=True, transformchange=0,
                 if event.key == pg.K_1:
                     transformchange += 5
                 elif event.key == pg.K_2:
-                    transformchange = max(transformchange - 5, 0)
+                    transformchange = max(transformchange - 5, 1 - transform)
                 elif event.key == pg.K_a:
                     Xborder += 15
                 elif event.key == pg.K_d:
@@ -55,6 +64,12 @@ def drawSavedMap(file, width=WIDTH, height=HEIGHT, text=True, transformchange=0,
                     Yborder += 15
                 elif event.key == pg.K_s:
                     Yborder -= 15
+                elif event.key == pg.K_RIGHT and browsing:
+                    return "right"
+                elif event.key == pg.K_LEFT and browsing:
+                    return "left"
+                elif event.key == pg.K_q and browsing:
+                    return "back"
                 if selected is not None:
                     if event.key == pg.K_RIGHT:
                         x, y = dict["regions"][selected]
@@ -161,6 +176,10 @@ def drawSavedMap(file, width=WIDTH, height=HEIGHT, text=True, transformchange=0,
             selected, pos = select(positions)
             pg.draw.circle(screen, (0,0,0), [int(i) for i in pos], 10)
 
+        if display_name is not None:
+            text = myfont.render(display_name, 1, (0, 0, 0))
+            screen.blit(text, (20, 5))
+
         pg.display.flip()
 
 def printMove(dict, y=0, x=0):
@@ -200,4 +219,4 @@ def printMove(dict, y=0, x=0):
 #printMove(tilemap, 5, 36) #asia
 
 if __name__ == "__main__":
-    drawSavedMap("maps/final_maps/world.json", transformchange=0, text=True)
+    drawSavedMap("maps/final_maps/europe_full.json", transformchange=0, text=True)

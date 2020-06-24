@@ -22,7 +22,8 @@ class TextInput:
             cursor_color=(0, 0, 1),
             repeat_keys_initial_ms=400,
             repeat_keys_interval_ms=35,
-            max_string_length=-1):
+            max_string_length=-1,
+            user_friendly=True):
         """
         :param initial_string: Initial text to be displayed
         :param font_family: name or list of names for font (see pygame.font.match_font for precise format)
@@ -41,6 +42,7 @@ class TextInput:
         self.font_size = font_size
         self.max_string_length = max_string_length
         self.input_string = initial_string  # Inputted text
+        self.user_friendly = user_friendly
 
         if not os.path.isfile(font_family):
             font_family = pygame.font.match_font(font_family)
@@ -137,6 +139,7 @@ class TextInput:
         # Re-render text surface:
         self.surface = self.font_object.render(self.input_string, self.antialias, self.text_color)
 
+
         # Update self.cursor_visible
         self.cursor_ms_counter += self.clock.get_time()
         if self.cursor_ms_counter >= self.cursor_switch_ms:
@@ -149,7 +152,12 @@ class TextInput:
             if self.cursor_position > 0:
                 cursor_y_pos -= self.cursor_surface.get_width()
             self.surface.blit(self.cursor_surface, (cursor_y_pos, 0))
-
+        if self.user_friendly:
+            text = self.font_object.render(
+                "Enter name of region, then press enter.",
+                1, (0, 0, 0))
+            self.surface.blit(text, (10, 50))
+        pygame.display.update()
         self.clock.tick()
         return False
 
@@ -195,6 +203,7 @@ if __name__ == "__main__":
         textinput.update(events)
         # Blit its surface onto the screen
         screen.blit(textinput.get_surface(), (10, 10))
+
 
         pygame.display.update()
         clock.tick(30)

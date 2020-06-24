@@ -19,6 +19,8 @@ class CreateMap:
         self.border = []
         self.mode = "region"
         self.outliers = []
+        self.image = image
+        self.user_friendly = user_friendly
 
         if progress is not None:
             if "regions" in progress.keys():
@@ -34,14 +36,17 @@ class CreateMap:
                         self.addNeighbor(pair[0], pair[1])
 
 
+    def run(self):
         while True:
-            if image is None:
+            if self.image is None:
                 screen.fill((255, 255, 255))
             else:
                 screen.blit(image, (0,0))
-            if user_friendly:
-                text = myfont.render("Draw a map! Add node: Left click. Add vertice: Shift click. Draw border polygon: Ctrl click. Done? Spacebar.", 1, (0, 0, 0))
+            if self.user_friendly:
+                text = myfont.render("Draw a map! Add node: Left click (OBS: after adding region, type in name and press enter). ", 1, (0, 0, 0))
+                text2 = myfont.render("Add vertice: Shift click. Draw border polygon: Ctrl click. Done? Spacebar. Switch app: Q.", 1, (0, 0, 0))
                 screen.blit(text, (10,10))
+                screen.blit(text2, (10,28))
 
             if pg.key.get_mods() & pg.KMOD_SHIFT:
                 mode = "neighbor"
@@ -59,7 +64,9 @@ class CreateMap:
                 if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                     self.printData()
                     self.updateCache()
-                    return None
+                    return True
+                if event.type == pg.KEYDOWN and event.key == pg.K_q:
+                    return False
                 if mode == "neighbor":
                     if event.type == pg.KEYUP and event.mod == pg.KMOD_SHIFT:
                         self.selected = []
