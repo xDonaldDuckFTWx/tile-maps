@@ -2,11 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="009d1836-e9e3-4eda-9be4-13797fec104a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/venv/CreateMapFromFile.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/DrawSavedMapWithData.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/GeoJSONconverter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/maps/data/world_random_binarydata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/maps/final_maps/france_regions.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/maps/final_maps/oceania.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/maps/final_maps/spain_provinces.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/maps/final_maps/world_full.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/maps/geojson_maps/brazil_states.geojson" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/maps/geojson_maps/france_regions.geojson" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/maps/geojson_maps/spain_provinces.geojson" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/trash.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/CreateMap.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/CreateMap.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Classes.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Classes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/DrawSavedMap.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/DrawSavedMap.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/Generate.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Generate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Hungarian.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Hungarian.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/Pygame_setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Pygame_setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Pygame_textinput.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Pygame_textinput.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/maps/final_maps/cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/final_maps/cache.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/maps/pre_maps/cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/pre_maps/cache.json" afterDir="false" />
     </list>
@@ -33,7 +49,12 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/venv" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\olle.lapidus\PycharmProjects\Tile Maps Clean\venv" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -47,8 +68,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Main">
-    <configuration name="CreateMap" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.DrawSavedMap">
+    <configuration name="CreateMapFromFile" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Tile Maps Clean" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -60,7 +81,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/CreateMap.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/CreateMapFromFile.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -111,6 +132,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="GeoJSONconverter" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Tile Maps Clean" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/venv" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/GeoJSONconverter.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Tile Maps Clean" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -132,34 +174,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Main_final" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Tile Maps Clean" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/venv" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/Main_final.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.Main" />
-        <item itemvalue="Python.CreateMap" />
         <item itemvalue="Python.DrawSavedMap" />
+        <item itemvalue="Python.CreateMapFromFile" />
+        <item itemvalue="Python.Main" />
         <item itemvalue="Python.Generate" />
-        <item itemvalue="Python.Main_final" />
+        <item itemvalue="Python.GeoJSONconverter" />
       </list>
     </recent_temporary>
   </component>

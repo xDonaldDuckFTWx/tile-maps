@@ -1,3 +1,5 @@
+#DESCRIPTION: This program handles text input for when naming regions during map generation.
+
 import os.path
 
 import pygame

@@ -1,13 +1,14 @@
+#DESCRITPTION: Based on an input file of regions (centroids and neighbors) generates tile map
+
 from Classes import *
 
 
 def generate(file):
+    #clock makes sure program doesn't exceed a certain updates per second.
     clock = pg.time.Clock()
     running = True
     updating = False
 
-    viewing = file  # options: "europe", "africa", "asia", "american_continent", "latin_america",
-    # "usa_states", "india_main", "india_side", "china_provinces", "sweden_counties", "sweden_municipalities"
     geometry = "hexagon"
 
     with open(file) as f:
@@ -52,6 +53,8 @@ def generate(file):
             map.drawTilepoints()
         else:
             map.drawTileMap(text=True)
+
+            # Writes to cache save file
             jsonString = '{}"geometry":"{}","regions":{}'.format("{", map.geometry, "{")
 
             for region_index in range(map.number_of_regions - 1):
@@ -70,7 +73,10 @@ def generate(file):
         pg.display.flip()
         clock.tick(60)
 
+# If this file runs as __main__, generates and draws.
 if __name__ == "__main__":
     from DrawSavedMap import *
-    generate("maps/pre_maps/asia.json")
+    #from GeoJSONconverter import *
+    #generate("maps/pre_maps/china_provinces.json")
+    generate("maps/pre_maps/cache.json")
     drawSavedMap("maps/final_maps/cache.json")

@@ -17,8 +17,30 @@ def select(positions):
     minDis = min(distances.keys())
     return (distances[minDis], positions[distances[minDis]])
 
+def updateRandomWorldData():
+    with open("maps/data/world_random_binarydata.json", "r+") as f:
+        data = json.load(f)
+        new_json = "{"
+        for region in data.keys():
+            data[region] = str(randint(0, 1))
 
-def drawSavedMap(file,
+        l = len(data.keys()) - 1
+        keys = list(data.keys())
+        for i in range(l):
+            new_json += '"{}":"{}",'.format(keys[i], data[keys[i]])
+        new_json += '"{}":"{}"{}'.format(keys[l], data[keys[l]], "}")
+
+        f.seek(0)
+        f.truncate(0)
+        f.write(new_json)
+
+        f.close()
+        with open("maps/data/world_random_binarydata.json", "r+") as f:
+            data = json.load(f)
+            return data
+
+
+def drawSavedMap(file, data,
                  width=WIDTH,
                  height=HEIGHT,
                  text=True,
@@ -27,9 +49,14 @@ def drawSavedMap(file,
                  Yborder=10,
                  desired_geometry="hexagon",
                  browsing = False,
-                 display_name = None):
+                 display_name = None
+                 ):
     with open(file) as f:
         tilemap = json.load(f)
+        f.close()
+    with open(data) as f:
+        data = json.load(f)
+        f.close()
 
     for region in tilemap["regions"].keys():
         x, y = tilemap["regions"][region][1:-1].split()
@@ -53,7 +80,7 @@ def drawSavedMap(file,
                 if event.key == pg.K_1:
                     transformchange += 5
                 elif event.key == pg.K_2:
-                    transformchange = transformchange - 5#max(transformchange - 5, 1 - transform)
+                    transformchange = max(transformchange - 5, 1 - transform)
                 elif event.key == pg.K_a:
                     Xborder += 15
                 elif event.key == pg.K_d:
@@ -62,25 +89,14 @@ def drawSavedMap(file,
                     Yborder += 15
                 elif event.key == pg.K_s:
                     Yborder -= 15
+                elif event.key == pg.K_SPACE:
+                    data = updateRandomWorldData()
                 elif event.key == pg.K_RIGHT and browsing:
                     return "right"
                 elif event.key == pg.K_LEFT and browsing:
                     return "left"
                 elif event.key == pg.K_q and browsing:
                     return "back"
-                if selected is not None:
-                    if event.key == pg.K_RIGHT:
-                        x, y = dict["regions"][selected]
-                        dict["regions"][selected] = (x + 2, y)
-                    if event.key == pg.K_LEFT:
-                        x, y = dict["regions"][selected]
-                        dict["regions"][selected] = (x - 2, y)
-                    if event.key == pg.K_UP:
-                        x, y = dict["regions"][selected]
-                        dict["regions"][selected] = (x + 1, y - 1)
-                    if event.key == pg.K_DOWN:
-                        x, y = dict["regions"][selected]
-                        dict["regions"][selected] = (x - 1, y + 1)
 
             if event.type == pg.MOUSEBUTTONDOWN:
                 selecting = True
@@ -124,7 +140,11 @@ def drawSavedMap(file,
                     corner_points = [(int(x), int(y)) for x, y in corner_points]
                     positions[region] = (x, y)
 
-                    color = (255, 50, 50)
+                    region_data = data[region]
+                    if region_data == "1":
+                        color = (255, 50, 50)
+                    else:
+                        color = (140, 50, 50)
 
                     pg.draw.polygon(screen, color, corner_points)
             else:
@@ -138,7 +158,12 @@ def drawSavedMap(file,
                     corner_points = [(int(x), int(y)) for x, y in corner_points]
                     positions[region] = (x, y)
 
-                    color = (255, 50, 50)
+
+                    region_data = data[region]
+                    if region_data == "1":
+                        color = (255, 50, 50)
+                    else:
+                        color = (50, 255, 50)
 
                     pg.draw.polygon(screen, color, corner_points)
 
@@ -161,7 +186,6 @@ def drawSavedMap(file,
                 y = int(y * transform + border)
                 positions[region] = (x, y)
 
-                color = (255, 50, 50)
                 pg.draw.rect(screen, color, (x, y, int(transform - 1), int(transform-1)))
 
                 region_name_text = myfont.render(region, 1, (0, 0, 0))
@@ -173,7 +197,19 @@ def drawSavedMap(file,
 
         if selecting:
             selected, pos = select(positions)
-            pg.draw.circle(screen, (0,0,0), [int(i) for i in pos], 10)
+
+            selected_text = myfont.render(selected, 1, (0,0,0))
+            if data[selected] == "1":
+                data_text = myfont.render("One data", 1, (255, 50, 50))
+            else:
+                data_text = myfont.render("Another data", 1, (50, 255, 50))
+            width, height = max(selected_text.get_rect().width, data_text.get_rect().width), \
+                            selected_text.get_rect().height + data_text.get_rect().height
+
+            pg.draw.rect(screen, (0,0,0), [int(i) for i in pos] + [width + 10, height + 10], 1)
+            pg.draw.rect(screen, (255, 255, 255), [int(i) + 1 for i in pos] + [width + 8, height + 8])
+            screen.blit(selected_text, [int(i) + 5 for i in pos])
+            screen.blit(data_text, [int(pos[0]) + 5, int(pos[1]) + 5 + selected_text.get_rect().height])
 
         if display_name is not None:
             display_text = myfont.render(display_name, 1, (0, 0, 0))
@@ -195,45 +231,7 @@ def printMove(file_directory_or_dict, y=0, x=0):
 
     dict = tilemap
 
-    print("DICT Data:")
-    print("{")
-    print('   "geometry" : "{}",'.format(dict["geometry"]))
-    print('   "regions" : ')
-    print("      {")
-    for region in dict["regions"].keys():
-        X, Y = dict["regions"][region]
-        X += x
-        Y += y
-        print('         "{}" : ({}, {}),'.format(region, X, Y))
-    print("      }")
-    print("}")
-    print("\n")
-    print("JSON Data:")
-    print('{}"geometry":"{}","regions":{}'.format("{", dict["geometry"], "{"), end="")
-    i = 0
-    for region in dict["regions"].keys():
-        X, Y = dict["regions"][region]
-        X += x
-        Y += y
-        print('"{}":"({}, {})"'.format(region, X, Y),end="")
-        i += 1
-        if i < len(dict["regions"].keys()):
-            print(",",end="")
-    print("}}")
 
-
-
-
-
-#printMove(american_continent, 4, 0)
-#printMove(africa, 9, 16)
-#printMove(eu, 0, 18)
-#printMove(tilemap, 5, 36) #asia
 
 if __name__ == "__main__":
-    """printMove("maps/final_maps/american_continent_full.json", 4, 0)
-    printMove("maps/final_maps/africa.json", 9, 21)
-    printMove("maps/final_maps/europe_full.json", 0, 24)
-    printMove("maps/final_maps/asia.json", 5, 40)"""
-    #printMove("maps/final_maps/oceania.json", 13, 51)
-    drawSavedMap("maps/final_maps/cache.json", transformchange=0, text=True)
+    drawSavedMap("maps/final_maps/world_full.json", "maps/data/world_random_binarydata.json", transformchange=0, text=False, desired_geometry="hexagon")

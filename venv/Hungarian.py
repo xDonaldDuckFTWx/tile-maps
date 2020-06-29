@@ -1,3 +1,5 @@
+#DESCRIPTION: The Hungarian algorithm is used for when you have generated all possible tile placements for a map, 
+# and want to assign regions in a way where the sum of the squares of the distances is minimized.
 
 
 #!/usr/bin/python

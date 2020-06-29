@@ -1,3 +1,5 @@
+#DESCRITION: Import all necessary libraries. initialize pygame and set window dimensions.
+
 import pygame as pg
 import numpy as np
 from random import randint

@@ -84,7 +84,10 @@ class Map:
 
         if dict is not None:
             for key in dict["regions"].keys():
-                x, y = [float(i) for i in dict["regions"][key]["coordinates"][1:-1].split(", ")]
+                if isinstance(dict["regions"][key]["coordinates"][1:-1], (str)):
+                    x, y = [float(i) for i in dict["regions"][key]["coordinates"][1:-1].split(", ")]
+                else:
+                    x, y = dict["regions"][key]["coordinates"]
                 if not dictYNorth: y = 0-y
                 self.addRegion((x, y))
                 self.regions[-1].name = key
@@ -92,9 +95,6 @@ class Map:
                 dict["regions"][key]["neighbors"] = [i[1:-1] for i in dict["regions"][key]["neighbors"][1:-1].split(", ")]
                 for neighbor in dict["regions"][key]["neighbors"]:
                     self.addConnection(list(dict["regions"].keys()).index(key), list(dict["regions"].keys()).index(neighbor))
-            for key in dict["outliers"].keys():
-                x, y = [float(i) for i in dict["outliers"][key]["coordinates"][1:-1].split(", ")]
-                self.addOutlierRegion(list(dict["regions"].keys()).index(dict["outliers"][key]["closest_to"]), (x, y), name=key)
 
             if dictCoordinatesGPS:
                 self.transformGPStoFlat()
@@ -159,7 +159,7 @@ class Map:
             x, y = self.border[point_index].copy()
             self.border[point_index] =  ((x + shiftX) * transform_value + midX,
                                         (y + shiftY) * transform_value + midY)
-    
+
     def draw(self, region_radius=10):
         self.drawing_coordinates_neighbors = []
         for region in self.regions:
@@ -180,7 +180,7 @@ class Map:
     def addRegion(self, centroid):
         self.regions.append(Region(centroid, self.number_of_regions))
         self.number_of_regions += 1
-    
+
     def addOutlierRegion(self, closest_to_id, coordinate, name=""):
         self.out_lier_regions.append(Outlier(closest_to_id, name, coordinate))
         self.number_of_outliers += 1
@@ -317,7 +317,7 @@ class TileMap(Map):
         self.transform_border(k=k)
         self.standardize()
         self.getArea()
-    
+
     #Draws grid-lines behind map
     def drawGrid(self):
         if self.geometry == "square":
@@ -411,19 +411,21 @@ class TileMap(Map):
             #region_x, region_y = self.tile_coordinates[self.region_index_to_tile_index[outlier.closest_to_id]]
             # bfs utill found
             start = self.region_to_tile_coordinate[outlier.closest_to_id]
-            def getNeighbors(x, y, only_adjacent=True, angle=True):
+            def getNeighbors(x, y, only_adjacent=True, angle=True, boundaries=False):
                 s = self.stepSize
                 if self.geometry == "square":
                     #returning = [(x + self.stepSize, y), (x - self.stepSize, y), (x, y + self.stepSize), (x, y - self.stepSize), (x + s, y + s), (x + s, y - s), (x - s, y + s), (x - s, y - s)]
                     returning = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
                     if not only_adjacent: returning += [(x + 1, y - 1), (x + 1, y + 1), (x - 1, y - 1), (x - 1, y + 1)]
-                    returning = [i for i in returning if (i[0] >= 0 and i[0] < self.tile_map_maxX and i[1] >= 0 and i[1] < self.tile_map_maxY)]
+                    if boundaries:
+                        returning = [i for i in returning if (i[0] >= 0 and i[0] < self.tile_map_maxX and i[1] >= 0 and i[1] < self.tile_map_maxY)]
                     if angle:
                         #Return only those in the same direction...
                         returning = [i for i in returning if (outlier.centroid[0] - i[0] <= outlier.centroid[0] - x and outlier.centroid[1] - i[1] <= outlier.centroid[1] - y)]
                 else:
                     returning = [(x + 2, y), (x - 2, y), (x + 1, y + 1), (x - 1, y + 1), (x + 1, y - 1), (x - 1, y - 1)]
-                    returning = [i for i in returning if (i[0] >= 0 and i[0] < self.tile_map_maxX and i[1] >= 0 and i[1] < self.tile_map_maxY)]
+                    if boundaries:
+                        returning = [i for i in returning if (i[0] >= 0 and i[0] < self.tile_map_maxX and i[1] >= 0 and i[1] < self.tile_map_maxY)]
                     if angle:
                         # Return only those in the same direction...
                         returning = [i for i in returning if (
@@ -431,8 +433,8 @@ class TileMap(Map):
                                 1] <= outlier.centroid[1] - y)]
 
                 return returning
-            visited = getNeighbors(start[0], start[1], angle=False) + [start]
-            queue = getNeighbors(start[0], start[1], angle=False)
+            visited = getNeighbors(start[0], start[1], angle=False, boundaries=True) + [start]
+            queue = getNeighbors(start[0], start[1], angle=False, boundaries=True)
             found = False
             tested = 0
             while queue and not found:
@@ -442,11 +444,17 @@ class TileMap(Map):
                     if not (x, y) in visited:
                         visited.append((x, y))
                         queue.append((x, y))
-                        if self.tile_map_dict[(x, y)] == None:
-                            if not any([self.tile_map_dict[neighbor] != None for neighbor in getNeighbors(x, y, only_adjacent=False, angle=False)]):
-                                result = (x, y)
-                                found = True
-                                break
+                        if (x, y) in self.tile_map_dict:
+                            if self.tile_map_dict[(x, y)] == None:
+                                if not any([self.tile_map_dict[neighbor] != None for neighbor in getNeighbors(x, y, only_adjacent=False, angle=False, boundaries=True)]):
+                                    result = (x, y)
+                                    found = True
+                                    break
+                        else:
+                            result = (x, y)
+                            found = True
+                            break
+
 
             x, y = result
             if self.geometry == "square"    : tile_x, tile_y = (x + 0.5) * self.stepSize, (y + 0.5) * self.stepSize
@@ -513,7 +521,7 @@ class TileMap(Map):
             self.tile_map_dict[coordinate] = self.regions[region_index].name
             self.region_to_tile_coordinate[region_index] = coordinate
 
-        
+
         if self.out_lier_regions:
             self.getOutLiers()
 
@@ -632,11 +640,11 @@ class TileMap(Map):
         P = 2 * (3.14159 * map.number_of_regions)**0.5"""
         roughness_cost = 0#(edges - P) / P
 
-            
+
 
         total_cost = distance_cost * distance_weight + adjacency_cost * adjacency_weight + orientation_cost * angle_weight + roughness_cost * roughness_weight
         return total_cost
-    
+
     def printDict(self):
         print("DICT Data:")
         print("{")
@@ -658,11 +666,25 @@ class TileMap(Map):
             print('"{}":"{}",'.format(region.name, self.region_to_tile_coordinate[region_index]),end="")
         print('"{}":"{}"{}'.format(self.regions[-1].name, self.region_to_tile_coordinate[self.number_of_regions - 1], "}}"))
 
+    def getJsonString(self):
+        json_string = '{}"geometry":"{}","regions":{}'.format("{", self.geometry, "{")
+        for region_index in range(self.number_of_regions - 1):
+            region = self.regions[region_index]
+            json_string += '"{}":"{}",'.format(region.name, self.region_to_tile_coordinate[region_index])
+        json_string += '"{}":"{}"{}'.format(self.regions[-1].name,
+                                            self.region_to_tile_coordinate[self.number_of_regions - 1],"}}")
+        self.json_string = json_string
 
 
-    
-def getMinimalCostMap(dict, border, number_of_maps, dictYNorth=True, geometry="square", distance_weight=1, adjacency_weight=1, angle_weight=1, roughness_weight=1):
-    maps = [TileMap(dict=dict, border=border, dictYNorth=dictYNorth, geometry=geometry) for i in range(number_of_maps)]
+
+
+def getMinimalCostMap(dict, number_of_maps, dictYNorth=True, geometry="square", distance_weight=1, adjacency_weight=1, angle_weight=1, roughness_weight=1, returnJson=False):
+    if returnJson:
+        if len(dict["regions"]) == 1:
+            return '{}"geometry":"{}","regions":{}"{}":"{}"{}{}'.format\
+                ("{", "hexagon", "{", list(dict["regions"].keys())[0], "(0, 0)", "}", "}")
+
+    maps = [TileMap(dict=dict, dictYNorth=dictYNorth, geometry=geometry) for i in range(number_of_maps)]
     for map in maps:
         map.updateMap(iterations=150, k=4, noise=True)
         while not map.matchTilepoints():
@@ -672,5 +694,10 @@ def getMinimalCostMap(dict, border, number_of_maps, dictYNorth=True, geometry="s
     for map_index in range(number_of_maps):
         costs[ maps[map_index].getCost(distance_weight=1, adjacency_weight=1, angle_weight=1, roughness_weight=1) ] = map_index
     minimal_cost = min(list(costs.keys()))
-    return maps[costs[minimal_cost]]
+    bestmap = maps[costs[minimal_cost]]
+    if returnJson:
+        bestmap.getJsonString()
+        return bestmap.json_string
+    else:
+        return bestmap
 

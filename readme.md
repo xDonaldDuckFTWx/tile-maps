@@ -9,6 +9,9 @@ Draw a map. Nodes = regions, left click
 Vertices between node represent neighbouring nodes, shift click on two regions
 Border: country border, ctrl click to draw border polygon
 
+Press Q to alter between apps (drawing and viewing)
+When viewing, navigate map with WASD, zoom with 1 and 2, change map with arrow keys
+
 
 
 
@@ -19,10 +22,12 @@ map = TileMap(
     "regions" : {"name_1": {"coordinates" : [x, y], "neighbors" : [name_2, ...], ...., border=[(x1, y1), (x2, y2), ...]}},
     "outliers" : {"outlier_1" : {"coordinates" : [x, y], "closest_to" : "name_1"}, ....}     #closest_to refers to region closest to outlier
   }
-  border = [(x, y), (x2, y2), (x3, y3), ...]     #corner points of border polygon
+  "border" = [(x, y), (x2, y2), (x3, y3), ...]     #corner points of border polygon
   )
 
 see Countries.py for examples of how a dict looks. "coordinates" is the coordinate of the region centroid.
+
+
 
 map.updateMap()
 map.getTileCoordinates()
