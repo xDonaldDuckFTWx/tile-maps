@@ -13,7 +13,7 @@ def main():
     else:
         maps = ["world", "europe", "africa", "asia", "american_continent", "latin_america", "china_provinces",
                 "usa_states", "india_provinces", "sweden_counties", "sweden_municipalities", "european_union_member_states",
-                "europe_full", "american_continent_full", "world_full", "france_regions", "spain_provinces"]
+                "europe_full", "american_continent_full", "world_full", "france_regions", "spain_provinces", "brazil_states"]
         mapfiles = ["maps/final_maps/{}.json".format(i) for i in maps]
         browsing_index = 0
         

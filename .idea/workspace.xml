@@ -2,29 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="009d1836-e9e3-4eda-9be4-13797fec104a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/venv/CreateMapFromFile.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/DrawSavedMapWithData.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/GeoJSONconverter.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/data/world_random_binarydata.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/final_maps/france_regions.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/final_maps/oceania.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/final_maps/spain_provinces.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/final_maps/world_full.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/geojson_maps/brazil_states.geojson" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/geojson_maps/france_regions.geojson" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/geojson_maps/spain_provinces.geojson" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/trash.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Classes.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Classes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/DrawSavedMap.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/DrawSavedMap.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Generate.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Generate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Hungarian.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Hungarian.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/CreateMapFromFile.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/CreateMapFromFile.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Pygame_setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Pygame_setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Pygame_textinput.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Pygame_textinput.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/maps/cache/cache0.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/cache/cache0.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/maps/final_maps/cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/final_maps/cache.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/pre_maps/cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/pre_maps/cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/maps/pre_maps/cache0.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/pre_maps/cache0.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +32,7 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/venv" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Tile Maps Clean V.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">

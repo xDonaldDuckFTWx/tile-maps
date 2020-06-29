@@ -82,4 +82,11 @@ def createMapFromFile(directory, chunk_dist = 8, order_dist = 0):
         
 
 if __name__ == "__main__":
-    createMapFromFile("maps/geojson_maps/brazil_states.geojson")
+    from tkinter import Tk
+    from tkinter.filedialog import askopenfilename
+    from os.path import relpath
+
+    Tk().withdraw()
+    filename = relpath(askopenfilename())  # show an "Open" dialog box and return the path to the selected file
+    createMapFromFile(filename)
+
