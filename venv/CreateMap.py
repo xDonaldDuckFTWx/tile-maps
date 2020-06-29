@@ -67,6 +67,8 @@ class CreateMap:
                     return True
                 if event.type == pg.KEYDOWN and event.key == pg.K_q:
                     return False
+                if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
+                    return "escape"
                 if mode == "neighbor":
                     if event.type == pg.KEYUP and event.mod == pg.KMOD_SHIFT:
                         self.selected = []

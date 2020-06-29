@@ -1,16 +1,17 @@
 from Classes import *
 from GeoJSONconverter import *
 import json
+from DrawSavedMap import drawSavedMap
 
 
-def createMapFromFile(directory, chunk_dist = 8, order_dist = 0):
+def createMapFromFile(directory, chunk_dist = 3, order_dist = 0, maps = 1):
     chunks_n, chunk_centers, chunk_regions_n = convertGeoJSON(directory)
     chunk_radi = [(i/pi)**0.5 for i in chunk_regions_n]
     
     for chunk_index in range(chunks_n):
         with open("maps/pre_maps/cache{}.json".format(chunk_index)) as f:
             with open("maps/cache/cache{}.json".format(chunk_index), "w+") as c:
-                j_s = getMinimalCostMap(json.load(f), 1, returnJson=True, geometry="hexagon")
+                j_s = getMinimalCostMap(json.load(f), maps, returnJson=True, geometry="hexagon")
                 c.seek(0)
                 c.truncate(0)
                 c.write(j_s)
@@ -20,7 +21,6 @@ def createMapFromFile(directory, chunk_dist = 8, order_dist = 0):
     with open("maps/cache/cache0.json", "r+") as f:
         final_dict = json.load(f)
 
-    print(final_dict)
 
     center = chunk_centers[0]
     rad = chunk_radi[0]
@@ -30,33 +30,60 @@ def createMapFromFile(directory, chunk_dist = 8, order_dist = 0):
         ang = [cen[0] - center[0], center[1] - cen[1]]
         ang2 = [i/sum([abs(k) for k in ang]) for i in ang]
         dist = rad + chunk_radi[chunk_index] + chunk_dist + chunk_index * order_dist
-        print(ang, ang2)
         transform_values.append( [int(ang2[i] * dist + rad) for i in [0,1]] )
 
     odd_to_odd = all([int(i)%2==0 for i in final_dict["regions"][list(final_dict["regions"].keys())[0]][1:-1].split(", ")]) or \
                  all([int(i)%2!=0 for i in final_dict["regions"][list(final_dict["regions"].keys())[0]][1:-1].split(", ")])
-    
+
+    occupied_coordinates = [tuple([int(i) for i in final_dict["regions"][region][1:-1].split(", ")]) for region in final_dict["regions"]]
+    for c_index in range(len(occupied_coordinates)):
+        x, y = occupied_coordinates[c_index]
+        occupied_coordinates += [(x + 2, y), (x - 2, y), (x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1)]
+    occupied_coordinates = set(occupied_coordinates)
+
     for chunk_index in range(1, chunks_n):
         with open("maps/cache/cache{}.json".format(chunk_index))as f:
             chunk = json.load(f)
-            for region in chunk["regions"]:
-                coords = [int(i) for i in chunk["regions"][region][1:-1].split(", ")]
-                new_coords = [coords[i] + transform_values[chunk_index - 1][i] for i in [0,1]]
-                if odd_to_odd:
-                    if new_coords[0]%2 != new_coords[1]%2:
-                        new_coords[0] -= 1
-                else:
-                    if new_coords[0]%2 == new_coords[1]%2:
-                        new_coords[0] -= 1
+            print(chunk)
+            regions = list(chunk["regions"].keys())
 
-                new_coords_string = '({}, {})'.format(new_coords[0], new_coords[1])
+            def assign(power):
+                chunk_coords = []
+                for region in chunk["regions"]:
+                    coords = [int(i) for i in chunk["regions"][region][1:-1].split(", ")]
+                    new_coords = [int(coords[i] + transform_values[chunk_index - 1][i] * power) for i in [0,1]]
+                    if odd_to_odd:
+                        if new_coords[0]%2 != new_coords[1]%2:
+                            new_coords[0] -= 1
+                    else:
+                        if new_coords[0]%2 == new_coords[1]%2:
+                            new_coords[0] -= 1
+
+                    chunk_coords.append(tuple(new_coords))
+                cSet = set(chunk_coords)
+                if len(cSet) + len(occupied_coordinates) == len(cSet.union(occupied_coordinates)):
+                    return chunk_coords
+                else:
+                    return False
+
+            pow = 1; e = False
+            while e == False:
+                e = assign(pow)
+                pow += 0.1
+
+            index = 0
+            for region in regions:
+                print(e, index)
+                x, y = e[index]
+                index += 1
+                new_coords_string = '({}, {})'.format(x, y)
                 final_dict["regions"][region] = new_coords_string
+                for i in [(x + 2, y), (x - 2, y), (x + 1, y + 1), (x + 1, y - 1), (x - 1, y + 1), (x - 1, y - 1), (x, y)]:
+                    occupied_coordinates.add(i)
             f.close()
 
-    print(final_dict)
     minX = min([int(final_dict["regions"][region][1:-1].split(", ")[0]) for region in final_dict["regions"].keys()])
     minY = min([int(final_dict["regions"][region][1:-1].split(", ")[1]) for region in final_dict["regions"].keys()])
-    print(minX, minY)
     for region in final_dict["regions"]:
         coords = [int(i) for i in final_dict["regions"][region][1:-1].split(", ")]
         coords[0] += abs(minX)
@@ -64,7 +91,6 @@ def createMapFromFile(directory, chunk_dist = 8, order_dist = 0):
         new_coords = '({}, {})'.format(coords[0], coords[1])
         final_dict["regions"][region] = new_coords
 
-    print(final_dict)
 
 
     with open("maps/final_maps/cache.json", "r+") as f:
@@ -77,16 +103,18 @@ def createMapFromFile(directory, chunk_dist = 8, order_dist = 0):
 
 
         
-        
-        
-        
-
-if __name__ == "__main__":
+def chooseFileToCreate(chunk_dist = 3, order_dist = 0, maps = 1):
     from tkinter import Tk
     from tkinter.filedialog import askopenfilename
     from os.path import relpath
 
     Tk().withdraw()
     filename = relpath(askopenfilename())  # show an "Open" dialog box and return the path to the selected file
-    createMapFromFile(filename)
+    createMapFromFile(filename, chunk_dist, order_dist, maps)
+    if drawSavedMap("maps/final_maps/cache.json") == "escape":
+        return "escape"
+        
+
+if __name__ == "__main__":
+    chooseFileToCreate()
 

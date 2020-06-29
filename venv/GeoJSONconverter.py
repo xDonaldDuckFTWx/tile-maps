@@ -64,8 +64,6 @@ def convertGeoJSON(file, treatMultiAsSingle=False, border_points=100):
         region["coordinates"] = (x, y)
 
     chunks.sort(reverse=True, key=len)
-    for c in chunks:
-        print(c)
 
     for chunk_index in range(len(chunks)):
         chunk = chunks[chunk_index]

@@ -48,6 +48,8 @@ def drawSavedMap(file,
             if event.type == pg.QUIT:
                 running = False
             if event.type == pg.KEYDOWN:
+                if event.key == pg.K_ESCAPE:
+                    return "escape"
                 if event.key == pg.K_SPACE:
                     printMove(dict)
                 if event.key == pg.K_1:
@@ -62,6 +64,8 @@ def drawSavedMap(file,
                     Yborder += 15
                 elif event.key == pg.K_s:
                     Yborder -= 15
+                elif event.key == pg.K_t:
+                    text = not text
                 elif event.key == pg.K_RIGHT and browsing:
                     return "right"
                 elif event.key == pg.K_LEFT and browsing:

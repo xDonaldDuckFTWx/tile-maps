@@ -92,7 +92,8 @@ class Map:
                 self.addRegion((x, y))
                 self.regions[-1].name = key
             for key in dict["regions"].keys():
-                dict["regions"][key]["neighbors"] = [i[1:-1] for i in dict["regions"][key]["neighbors"][1:-1].split(", ")]
+                if isinstance(dict["regions"][key]["neighbors"], (str)):
+                    dict["regions"][key]["neighbors"] = [i[1:-1] for i in dict["regions"][key]["neighbors"][1:-1].split(", ")]
                 for neighbor in dict["regions"][key]["neighbors"]:
                     self.addConnection(list(dict["regions"].keys()).index(key), list(dict["regions"].keys()).index(neighbor))
 
