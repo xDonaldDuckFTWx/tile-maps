@@ -1,70 +1,31 @@
 # tile-maps
 Generate Tile Maps
 
-Usage:
+# Usage:
 run:
-python Main.py
+python GUI.py
 
-Draw a map. Nodes = regions, left click
-Vertices between node represent neighbouring nodes, shift click on two regions
-Border: country border, ctrl click to draw border polygon
+Use arrow keys and enter to choose app.
 
-Press Q to alter between apps (drawing and viewing)
-When viewing, navigate map with WASD, zoom with 1 and 2, change map with arrow keys
+# Draw Graph map...
+In this app you draw a graph with an enclosing border. Nodes represent regions, and edges a connection between two regions.
+Add node: Click mouse button (you will then be asked to name node, type name and press enter).
+Add edge between nodes: Shift click mouse button on the two desired nodes.
+Draw border: Ctrl click mouse button. Every click creates a new corner in border polygon.
 
-
-
-
-Otherwise:
-
-map = TileMap(
-  dict = {
-    "regions" : {"name_1": {"coordinates" : [x, y], "neighbors" : [name_2, ...], ...., border=[(x1, y1), (x2, y2), ...]}},
-    "outliers" : {"outlier_1" : {"coordinates" : [x, y], "closest_to" : "name_1"}, ....}     #closest_to refers to region closest to outlier
-  }
-  "border" = [(x, y), (x2, y2), (x3, y3), ...]     #corner points of border polygon
-  )
-
-see Countries.py for examples of how a dict looks. "coordinates" is the coordinate of the region centroid.
+When finished drawing, press space to start generating map.  
 
 
-
-map.updateMap()
-map.getTileCoordinates()
-map.convertToTileMap()
-
-
-
-
-When working with maps with lots of regions, you can do
-
-map.convertToTileMap(cheate=True)
-
-in order to quickly preview the geometrical shape of the map. What this does is remove the assignment step of the algorithm, which means that the tiles won't have the right region assigned to them. When dealing with outliers, this will make them behave strangely.
-
-To print out dict for map, press 9.
+# Browse saved prev...
+In this app you can browse and edit all existing tile maps.
+WASD: Move around on screen.
+1 and 2: Zoom.
+Mouse: Select region(s).
+Arrow keys: When selected regions, move them with arrow keys.
+To enter editing mode, press "EDIT". When pressing "SAVE", current file gets overwritten with changes.
 
 
-
-To view preset maps:
-Run DrawSavedMap.py
-with:
-drawSavedMap(saved_map, transformchange=0, text=bool)
-
-simple use: change the drawing variable to one of the listed available strings
-
-Key shortcuts: WASD moves screen, 1,2 zooms, mouse and arrow keys edits maps, spacebar prints edited map.
-
-
-
-To create new map template for coverting to tile map:
-Run CreateMap.py
-image = pg.load("*path*") to get desired background image
-image = pg.transform.scale(image, (WIDTH, HEIGHT))
-create_map = CreateMap(image=image)
-
-Keys:
-mouse + no mod  : add region
-mouse + shift   : create vertice between two regions
-mouse + ctrl    : create border polygon
-spacebar prints out map dict and border
+# Create Tile Map from GeoJSON file...
+In this app you can choose a file to create a tile map from.
+When starting app, you will through tkinter be asked to choose a file directory.
+Creation can take up to a few minutes, depending on number of regions and map iterations.
