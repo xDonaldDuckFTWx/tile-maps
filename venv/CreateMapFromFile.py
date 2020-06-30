@@ -10,7 +10,7 @@ def createMapFromFile(directory, chunk_dist = 3, order_dist = 0, maps = 1):
     
     for chunk_index in range(chunks_n):
         with open("maps/pre_maps/cache{}.json".format(chunk_index)) as f:
-            with open("maps/cache/cache{}.json".format(chunk_index), "w+") as c:
+            with open("maps/cache/cache{}.json".format(chunk_index), "w+", encoding="utf-8") as c:
                 j_s = getMinimalCostMap(json.load(f), maps, returnJson=True, geometry="hexagon")
                 c.seek(0)
                 c.truncate(0)

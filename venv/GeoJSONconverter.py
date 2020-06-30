@@ -9,7 +9,7 @@ def convertGeoJSON(file, treatMultiAsSingle=False, border_points=100):
 
         singlePolygons = {}
         for feature in geojson["features"]:
-            name_names = ["name", "nom", "namn", "nam"]
+            name_names = ["name_english", "name", "nom", "namn", "nam"]
             name_index = 0
             while name_names[name_index] not in feature["properties"].keys():
                 name_index += 1

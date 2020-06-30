@@ -1,4 +1,5 @@
 from Pygame_setup import *
+from EditMap import editSavedMap
 """
 drawing = "europe_full"
 # Possibilities: "world", "europe", "africa", "asia", "american_continent", "latin_america", "china_provinces",
@@ -6,6 +7,34 @@ drawing = "europe_full"
 desired_geometry = "hexagon"
 
 """
+
+class EditButton:
+    def __init__(self):
+        self.rect = (WIDTH - 100, 20, 80, 65)
+        self.text = myfont.render("EDIT", 1, (0, 0, 0))
+        self.reg_color = (164, 231, 141)
+        self.hover_color = (120, 165, 110)
+        self.hovering = False
+
+    def draw(self):
+        button = pg.Surface((self.rect[2], self.rect[3]))
+        if not self.hovering:
+            button.set_alpha(120)
+            button.fill(self.reg_color)
+        else:
+            button.fill(self.hover_color)
+        button.blit(self.text, ((self.rect[2]-self.text.get_rect().width)//2 ,
+                                (self.rect[3]-self.text.get_rect().height)//2))
+        screen.blit(button, (self.rect[0], self.rect[1]))
+
+    def updateHovering(self, mouse_x, mouse_y):
+        self.hovering = mouse_x > self.rect[0] and mouse_x < self.rect[0] + self.rect[2] and \
+        mouse_y > self.rect[1] and mouse_y < self.rect[1] + self.rect[3]
+
+    def edit(self, directory):
+        editSavedMap(directory)
+
+edit_button = EditButton()
 
 def select(positions):
     mousex, mousey = pg.mouse.get_pos()
@@ -28,14 +57,17 @@ def drawSavedMap(file,
                  desired_geometry="hexagon",
                  browsing = False,
                  display_name = None):
-    with open(file) as f:
-        tilemap = json.load(f)
 
-    for region in tilemap["regions"].keys():
-        x, y = tilemap["regions"][region][1:-1].split()
-        x = x[:-1]
-        tilemap["regions"][region] = (int(x), int(y))
-    dict = tilemap
+    def updateDict():
+        with open(file) as f:
+            tilemap = json.load(f)
+
+        for region in tilemap["regions"].keys():
+            x, y = tilemap["regions"][region][1:-1].split()
+            x = x[:-1]
+            tilemap["regions"][region] = (int(x), int(y))
+        return tilemap
+    dict = updateDict()
 
     running = True
     selecting = False
@@ -44,6 +76,10 @@ def drawSavedMap(file,
 
     while running:
         pg.draw.rect(screen, (255, 255, 255), (0, 0, WIDTH, HEIGHT))
+        mouse_x, mouse_y = pg.mouse.get_pos()
+        edit_button.updateHovering(mouse_x, mouse_y)
+        edit_button.draw()
+
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 running = False
@@ -88,6 +124,9 @@ def drawSavedMap(file,
 
             if event.type == pg.MOUSEBUTTONDOWN:
                 selecting = True
+                if edit_button.hovering:
+                    edit_button.edit(file)
+                    dict = updateDict()
             if event.type == pg.MOUSEBUTTONUP:
                 selecting = False
         keys = pg.key.get_pressed()

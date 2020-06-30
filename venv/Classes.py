@@ -30,6 +30,7 @@ from Hungarian import Hungarian
 
 
 class Region:
+    """ The region class keeps track of single regions in a map - i.e. nodes. """
     def __init__(self, centroid, id, name="Ö"):
         self.original_centroid = centroid
         self.centroid = centroid
@@ -56,6 +57,8 @@ class Outlier:
         self.centroid = coordinate
 
 class Map:
+    """ The map class functions as a foundation to the TileMap class.
+        This class focuses on the creation and drawing of a graph. """
     def __init__(self, dict=None, dictYNorth=True):
         self.number_of_regions = 0
         self.number_of_outliers = 0
@@ -103,7 +106,8 @@ class Map:
             self.standardize()
 
 
-
+    """ Since GPS coordinates when projected on a surface seem 'curvy', 
+        we transform them to a flatter version."""
     def transformGPStoFlat(self):
         # It is assumed all region coordinates are GPS coordinates
         coordinates = [region.centroid for region in self.regions]
@@ -135,6 +139,9 @@ class Map:
 
         self.border = new_coordinates
 
+    """ To ensure that the map does not shrink or grow in any particular iteration, 
+        we call this function, which puts the minimum and maxmium coordinates on 
+        decided spots. """
     def standardize(self):
         allX = [region.centroid[0] for region in self.regions] + [border_point[0] for border_point in self.border]
         allY = [region.centroid[1] for region in self.regions] + [border_point[1] for border_point in self.border]
@@ -193,6 +200,10 @@ class Map:
         self.regions[min(id_1, id_2)].addHighNeighbor(max(id_1, id_2))
 
 
+""" The TileMap class inherits all properties and funcs from the Map class. 
+    The TileMap focuses more on the specific tile-map functionalities (whereas the
+    Map focuses on the broader graph-specifics). """
+
 class TileMap(Map):
     def __init__(self, dict=None, dictYNorth=True, geometry="square"):
         Map.__init__(self, dict=dict, dictYNorth=dictYNorth)
@@ -215,13 +226,17 @@ class TileMap(Map):
             result[1] += vector[1]
         return result
 
-    #sets self.area to the area contained within the country border
+    """ Sets self.area to the area contained within the country border. 
+        Using the python library shapely. """
     def getArea(self):
 
         self.border_polygon = Polygon(self.border)
         self.area = self.border_polygon.area
         self.stepSize = (self.area / self.number_of_regions) ** 0.5
 
+
+    """ The following functions are based entirely on the mathematical formulas of 
+        "Generating Tile Maps". """
     #Used for transforming centroids
     def getUji(self, ci, cj):
         subtracted = [ci[0] - cj[0], ci[1] - cj[1]]
@@ -300,9 +315,9 @@ class TileMap(Map):
             new_border.append(res_final)
         self.border = new_border.copy()
 
-    #Update centroids and border. iterations = how many iterations of centroid updates.
-    #k = how many of closest regions every border point takes into account.
-    #noise = True if regions begin by having their centroid shifted with Gaussian nosie.
+    """Update centroids and border. iterations = how many iterations of centroid updates.
+    k = how many of closest regions every border point takes into account.
+    noise = True if regions begin by having their centroid shifted with Gaussian nosie."""
     def updateMap(self, iterations=30, k=3, noise=True):
         if self.area == 0:
             raise Exception("Border area is 0")
@@ -405,12 +420,6 @@ class TileMap(Map):
     # Gives every outlier a position in final map.
     def getOutLiers(self):
         for outlier in self.out_lier_regions:
-         #   outlier_pos = outlier.centroid
-          #  closest_region_pos = self.regions[outlier.closest_to_id].centroid
-           # original_angle = asin((outlier_pos[1] - closest_region_pos[1]) / (((outlier_pos[1] - closest_region_pos[1])**2 + (outlier_pos[0] - closest_region_pos[0])**2)**0.5))
-
-            #region_x, region_y = self.tile_coordinates[self.region_index_to_tile_index[outlier.closest_to_id]]
-            # bfs utill found
             start = self.region_to_tile_coordinate[outlier.closest_to_id]
             def getNeighbors(x, y, only_adjacent=True, angle=True, boundaries=False):
                 s = self.stepSize

@@ -16,7 +16,10 @@ def main():
 def browse():
     maps = ["world", "europe", "africa", "asia", "american_continent", "latin_america", "china_provinces",
             "usa_states", "india_provinces", "sweden_counties", "sweden_municipalities", "european_union_member_states",
-            "europe_full", "american_continent_full", "world_full", "france_regions", "spain_provinces", "brazil_states"]
+            "europe_full", "american_continent_full", "world_full", "france_regions", "spain_provinces", "brazil_states",
+            "denmark_municipalities", "austria_states", "ireland_counties", "greece_regions", "turkey", "italy_provinces",
+            "italy_regions", "japan", "liberia_regions", "luxembourg_communes", "luxembourg_cantones", "malaysia_regions",
+            "mexico_states"]
     mapfiles = ["maps/final_maps/{}.json".format(i) for i in maps]
     browsing_index = 0
 
