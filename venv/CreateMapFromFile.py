@@ -4,8 +4,8 @@ import json
 from DrawSavedMap import drawSavedMap
 
 
-def createMapFromFile(directory, chunk_dist = 3, order_dist = 0, maps = 1):
-    chunks_n, chunk_centers, chunk_regions_n = convertGeoJSON(directory)
+def createMapFromFile(directory, chunk_dist = 3, order_dist = 0, maps = 1, url=False):
+    chunks_n, chunk_centers, chunk_regions_n = convertGeoJSON(directory, url=url)
     chunk_radi = [(i/pi)**0.5 for i in chunk_regions_n]
     
     for chunk_index in range(chunks_n):
@@ -18,7 +18,7 @@ def createMapFromFile(directory, chunk_dist = 3, order_dist = 0, maps = 1):
                 c.close()
             f.close()
 
-    with open("maps/cache/cache0.json", "r+") as f:
+    with open("maps/cache/cache0.json", "r+", encoding="utf-8") as f:
         final_dict = json.load(f)
 
 
@@ -116,5 +116,8 @@ def chooseFileToCreate(chunk_dist = 3, order_dist = 0, maps = 1):
         
 
 if __name__ == "__main__":
-    chooseFileToCreate()
+    createMapFromFile(
+        "https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/pakistan.geojson", url=True)
+
+    #chooseFileToCreate()
 

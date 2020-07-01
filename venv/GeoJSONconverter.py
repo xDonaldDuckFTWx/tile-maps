@@ -1,33 +1,38 @@
 import json
 from shapely.geometry import Polygon, Point, MultiPolygon
 from math import pi, sin, cos
+import urllib.request
 
-def convertGeoJSON(file, treatMultiAsSingle=False, border_points=100):
-    with open(file, encoding="utf-8") as f:
-        geojson = json.load(f)
-        regions = {} #["name"] = {"neighbors":"", "border":""}
+def convertGeoJSON(file, treatMultiAsSingle=False, border_points=100, url=False):
+    if url:
+        with urllib.request.urlopen(file) as f:
+            geojson = json.load(f)
+    else:
+        with open(file, encoding="utf-8") as f:
+            geojson = json.load(f)
+    regions = {} #["name"] = {"neighbors":"", "border":""}
 
-        singlePolygons = {}
-        for feature in geojson["features"]:
-            name_names = ["name_english", "name", "nom", "namn", "nam"]
-            name_index = 0
-            while name_names[name_index] not in feature["properties"].keys():
-                name_index += 1
-            name = feature["properties"][name_names[name_index]]
-            regions[name] = {"neighbors" : [], "geometry" : None}
+    singlePolygons = {}
+    for feature in geojson["features"]:
+        name_names = ["name_english", "name", "nom", "namn", "nam"]
+        name_index = 0
+        while name_names[name_index] not in feature["properties"].keys():
+            name_index += 1
+        name = feature["properties"][name_names[name_index]]
+        regions[name] = {"neighbors" : [], "geometry" : None}
 
-            if feature["geometry"]["type"] == "Polygon":
-                regions[name]["geometry"] = Polygon(feature["geometry"]["coordinates"][0])
-                singlePolygons[name] = Polygon(feature["geometry"]["coordinates"][0])
+        if feature["geometry"]["type"] == "Polygon":
+            regions[name]["geometry"] = Polygon(feature["geometry"]["coordinates"][0])
+            singlePolygons[name] = Polygon(feature["geometry"]["coordinates"][0])
 
-            elif feature["geometry"]["type"] == "MultiPolygon":
-                singlePolygons[name] = Polygon(feature["geometry"]['coordinates'][0][0])
-                polygonsInMultipolygon = [Polygon(p[0]) for p in feature["geometry"]['coordinates']]
-                geometry = MultiPolygon(polygonsInMultipolygon)
-                regions[name]["geometry"] = geometry
+        elif feature["geometry"]["type"] == "MultiPolygon":
+            singlePolygons[name] = Polygon(feature["geometry"]['coordinates'][0][0])
+            polygonsInMultipolygon = [Polygon(p[0]) for p in feature["geometry"]['coordinates']]
+            geometry = MultiPolygon(polygonsInMultipolygon)
+            regions[name]["geometry"] = geometry
 
-            else:
-                print("OBS: region {} with geometry {}.".format(name, feature["geometry"]["type"]))
+        else:
+            print("OBS: region {} with geometry {}.".format(name, feature["geometry"]["type"]))
 
 
         for k1, v1 in regions.items():
@@ -116,4 +121,4 @@ def convertGeoJSON(file, treatMultiAsSingle=False, border_points=100):
     return len(chunks), chunk_centers, [len(chunk) for chunk in chunks]
 
 if __name__ == "__main__":
-    convertGeoJSON("maps/geojson_maps/france_regions.geojson")
+    convertGeoJSON("https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/oman.geojson", url=True)

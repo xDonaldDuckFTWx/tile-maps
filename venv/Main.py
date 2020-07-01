@@ -19,7 +19,9 @@ def browse():
             "europe_full", "american_continent_full", "world_full", "france_regions", "spain_provinces", "brazil_states",
             "denmark_municipalities", "austria_states", "ireland_counties", "greece_regions", "turkey", "italy_provinces",
             "italy_regions", "japan", "liberia_regions", "luxembourg_communes", "luxembourg_cantones", "malaysia_regions",
-            "mexico_states"]
+            "mexico_states", "oman_provinces", "oman_regions", "pakistan_regions", "poland_regions", "portugal_regions",
+            "romania_regions", "serbia_regions", "south_africa_regions", "spain_communities", "netherlands_regions",
+            "england_regions"]
     mapfiles = ["maps/final_maps/{}.json".format(i) for i in maps]
     browsing_index = 0
 
