@@ -2,41 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="009d1836-e9e3-4eda-9be4-13797fec104a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/venv/CreateFromURL.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/GPKGExtractor.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/final_maps/oman_provinces.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/final_maps/oman_regions.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/final_maps/pakistan_regions.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/final_maps/poland_regions.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/final_maps/portugal_regions.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/final_maps/romania_regions.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/final_maps/south_africa_regions.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/maps/geojson_maps/oman_regions.geojson" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/CreateMapFromFile.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/CreateMapFromFile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/GeoJSONconverter.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/GeoJSONconverter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/easy-install.pth" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/easy-install.pth" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/setuptools-40.8.0-py3.7.egg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/cache/cache0.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/cache/cache0.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/cache/cache1.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/cache/cache1.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/cache/cache2.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/cache/cache2.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/cache/cache3.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/cache/cache3.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/cache/cache4.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/cache/cache4.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/final_maps/cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/final_maps/cache.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/final_maps/mexico_states.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/final_maps/mexico_states.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/pre_maps/cache0.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/pre_maps/cache0.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/pre_maps/cache1.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/pre_maps/cache1.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/pre_maps/cache10.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/pre_maps/cache10.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/pre_maps/cache11.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/pre_maps/cache11.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/pre_maps/cache2.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/pre_maps/cache2.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/pre_maps/cache3.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/pre_maps/cache3.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/pre_maps/cache4.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/pre_maps/cache4.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/pre_maps/cache5.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/pre_maps/cache5.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/pre_maps/cache6.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/pre_maps/cache6.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/pre_maps/cache7.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/pre_maps/cache7.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/pre_maps/cache8.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/pre_maps/cache8.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/maps/pre_maps/cache9.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/maps/pre_maps/cache9.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/easy_install-3.7-script.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/easy_install-3.7.exe" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Scripts/easy_install-3.7.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/easy_install-script.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/easy_install.exe" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Scripts/easy_install.exe" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -80,7 +53,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.GPKGExtractor">
+  <component name="RunManager" selected="Python.GUI">
     <configuration name="CreateFromURL" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Tile Maps Clean" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -188,8 +161,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.GPKGExtractor" />
         <item itemvalue="Python.GUI" />
+        <item itemvalue="Python.GPKGExtractor" />
         <item itemvalue="Python.CreateFromURL" />
         <item itemvalue="Python.CreateMapFromFile" />
         <item itemvalue="Python.GeoJSONconverter" />
