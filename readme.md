@@ -36,3 +36,10 @@ Creation can take up to a few minutes, depending on number of regions and map it
 # To create from file online:
 run CreateFromURL.py
 Enter URL and desired file name.
+
+
+# Saved maps
+In the folder venv\maps\final_maps are all the already created maps.
+Under ..\final_maps\_countrymaps are maps of the world, of continents, the European Union...
+Other than that, folders exist for almost every county. Most have admin_1 maps (of the larger regions in the country),
+some also have admin_2 maps of smaller municipalities / correspondent.
